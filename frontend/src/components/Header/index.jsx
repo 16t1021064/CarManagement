@@ -1,7 +1,7 @@
 // eslint-disable-next-line quotes
 import { Grid } from "@mui/material";
 // eslint-disable-next-line quotes
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // eslint-disable-next-line quotes
 import { Link } from "react-router-dom";
 // eslint-disable-next-line quotes
@@ -9,7 +9,6 @@ import styles from "./index.module.sass";
 
 function Header() {
   const [list, setList] = useState({
-    activeObject: null,
     routes: [
       {
         id: 0,
@@ -22,7 +21,11 @@ function Header() {
         name: 'Danh Sách Sản phẩm',
       },
     ],
+    activeObject: null,
   });
+  useEffect(() => {
+    setList({ ...list, activeObject: list.routes[0] });
+  }, []);
   function toggleActive(index) {
     setList({ ...list, activeObject: list.routes[index] });
   }
@@ -35,7 +38,7 @@ function Header() {
   return (
     <Grid item xs={12}>
       <div className={styles.header}>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <div className={styles.logo}>
             <Link href="./">
               <svg
@@ -71,7 +74,7 @@ function Header() {
             </Link>
           </div>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={5}>
           <ul>
             {list.routes.map((item) => (
               <Grid item xs={6} key={item.to}>
