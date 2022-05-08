@@ -6,7 +6,7 @@ import { Loading, Spinner } from './styles';
 
 export const OverLayContext = React.createContext({});
 
-function OverLayProvider(props) {
+const OverLayProvider = (props) => {
   const [loading, setLoading] = useState(false);
   return (
     <OverLayContext.Provider
@@ -25,6 +25,6 @@ function OverLayProvider(props) {
     </OverLayContext.Provider>
 
   );
-}
+};
 
 export default OverLayProvider;

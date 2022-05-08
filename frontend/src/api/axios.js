@@ -44,7 +44,6 @@ axiosInstance.interceptors.response.use(
     if (statusCode === 500) {
       // show notification
       toast.error('System has an error');
-      console.log('error', error);
       return;
     }
     throw error;
