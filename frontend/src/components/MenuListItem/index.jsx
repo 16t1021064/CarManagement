@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ListItemText, MenuItem, MenuList } from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import styles from './index.module.sass';
 
 function MenuListItem() {
@@ -44,6 +45,7 @@ function MenuListItem() {
     <MenuList className={styles.menulistitem}>
       <MenuItem>
         <ListItemText inset>Danh Mục</ListItemText>
+        <ArrowDropDownIcon />
       </MenuItem>
       {list.routes.map((item) => (
         <MenuItem
