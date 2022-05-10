@@ -1,11 +1,20 @@
+import { Grid } from '@mui/material';
 import React from 'react';
+import SearchBox from '../../components/SearchBox';
+import ProductTable from '../ManageProduct/components/ProductTable';
+import styles from './index.module.sass';
 
-function ProductList() {
+function ProductListView() {
   return (
-    <div>
-      <h3>Danh sách sản phẩm</h3>
-    </div>
+    <Grid xs={10} className={styles.manageproduct}>
+      <Grid className={styles.tableheader} xs={12}>
+        <SearchBox />
+      </Grid>
+      <Grid xs={12} className={styles.producttable}>
+        <ProductTable />
+      </Grid>
+    </Grid>
   );
 }
 
-export default ProductList;
+export default ProductListView;

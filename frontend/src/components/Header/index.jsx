@@ -12,13 +12,13 @@ function Header() {
     routes: [
       {
         id: 0,
-        to: '/quan-ly-sp',
+        to: '/danh-sach-sp',
         name: 'Sản phẩm',
       },
       {
         id: 1,
-        to: '/danh-sach-sp',
-        name: 'Danh Sách Sản phẩm',
+        to: '/quan-ly-sp',
+        name: 'Quản Lý Sản phẩm',
       },
     ],
     activeObject: null,
