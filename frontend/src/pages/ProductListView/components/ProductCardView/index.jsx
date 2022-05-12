@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import React from 'react';
 import styles from './index.module.sass';
 
-function ProductCard() {
+function ProductCardManage() {
   return (
     <Grid xs={4} className={styles.item}>
       <li>
@@ -16,4 +16,4 @@ function ProductCard() {
   );
 }
 
-export default ProductCard;
+export default ProductCardManage;

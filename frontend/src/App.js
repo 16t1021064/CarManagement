@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import ManageProduct from './pages/ManageProduct';
-import ProductList from './pages/ProductListView';
+import ProductListView from './pages/ProductListView';
 import ProductDetail from './pages/ProductDetail';
 import ProductUpdate from './pages/ProductUpdate';
 import ExamplePage from './pages/Example';
@@ -21,7 +21,7 @@ const routes = [
   },
   {
     path: '/danh-sach-sp',
-    component: ProductList,
+    component: ProductListView,
   },
   {
     path: '/chi-tiet-sp',
