@@ -95,6 +95,7 @@ export default function AddModal() {
             value={currency}
             onChange={handleChange}
             sx={{ width: '100%' }}
+            InputProps={{ height: '100px' }}
           >
             {currencies.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -145,6 +146,7 @@ export default function AddModal() {
           <TextareaAutosize
             aria-label="minimum height"
             minRows={4}
+            maxRows={4}
             placeholder="Nhập mô tả"
             style={{ width: '100%' }}
           />
