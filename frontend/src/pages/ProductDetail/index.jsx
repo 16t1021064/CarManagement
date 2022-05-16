@@ -17,7 +17,7 @@ function ProductDetail() {
       <Box
         sx={{
           background: '#fff',
-          width: '80%',
+          width: '90%',
           borderRadius: '20px',
           display: 'flex',
           justifyContent: 'center',
@@ -28,7 +28,6 @@ function ProductDetail() {
           sx={{
             width: '90%',
             height: '90%',
-            borderRadius: '20px',
           }}
         >
           <Grid xs={12} className="headerproductdetail">

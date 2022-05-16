@@ -1,0 +1,63 @@
+.productupdate
+    background: #E5E5E5
+    display: flex
+    justify-content: center
+    .productupdatefield
+        background: #fff
+        width: 90%
+        border-radius: 20px
+        display: flex
+        justify-content: center
+        align-items: center
+        margin-top: 5%
+        margin-bottom: 10%
+        .productdetailupdate
+            padding: 28px
+        .productimageupdate
+            padding: 36px 28px 28px 28px
+            height: 100%
+            .productthumb
+                .productthumbtitle
+                    font-family: 'Inter', sans-serif
+                    font-size: 16px
+                    margin-bottom: 10px
+                .productthumbimage
+                    overflow: hidden
+                    position: relative
+                    img
+                        width: 100%
+                    &:hover
+                        .hoverthumb
+                            display: flex
+                            flex-direction: column
+                            justify-content: space-around
+                            align-items: center
+                    .hoverthumb
+                        position: absolute
+                        background: black
+                        top: 0px
+                        bottom: 0px
+                        left: 0px
+                        right: 0px
+                        opacity: 0.7
+                        display: none
+                        .hoverthumbbtn
+                            color: #fff
+                            background: rgba(255, 255, 255, 0.5)
+                            border: 1px solid #fff
+                            width: 200px
+                            text-transform: none
+            .productslide
+                margin-top: 10px
+                .productslidetitle
+                    font-family: 'Inter', sans-serif
+                    font-size: 16px
+                    margin-bottom: 10px
+                ul
+                    padding: 0px
+                    display: flex
+                    flex-wrap: wrap
+                    justify-content: space-between
+.buttonside
+    display: flex
+    justify-content: space-around

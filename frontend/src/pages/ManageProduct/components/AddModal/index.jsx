@@ -17,7 +17,7 @@ import styles from './index.module.sass';
 
 export default function AddModal() {
   const [open, setOpen] = useState(false);
-  const [currency, setCurrency] = useState('Car');
+  const [currency, setCurrency] = useState('');
 
   const style = {
     position: 'absolute',
@@ -67,7 +67,7 @@ export default function AddModal() {
             <Typography id="modal-modal-title" variant="h5" component="h2">
               Thêm sản phẩm
             </Typography>
-            <CancelRoundedIcon styles={{ float: 'right' }} />
+            <CancelRoundedIcon styles={{ float: 'right' }} onClick={handleClose} sx={{ cursor: 'pointer' }} />
           </Grid>
           <Divider />
           <Typography
@@ -79,7 +79,7 @@ export default function AddModal() {
             Tên Sản Phẩm<span style={{ color: 'red' }}>*</span>
           </Typography>
           <FormControl sx={{ width: '100%' }}>
-            <OutlinedInput placeholder="Nhập tên sản phẩm" />
+            <OutlinedInput placeholder="Nhập tên sản phẩm" size="small" />
           </FormControl>
           <Typography
             id="modal-modal-title"
@@ -95,7 +95,8 @@ export default function AddModal() {
             value={currency}
             onChange={handleChange}
             sx={{ width: '100%' }}
-            InputProps={{ height: '100px' }}
+            label="--Chọn loại sản phẩm--"
+            size="small"
           >
             {currencies.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -114,9 +115,11 @@ export default function AddModal() {
           <TextField
             id="outlined-select-currency"
             select
+            label="--Chọn loại sản phẩm--"
             value={currency}
             onChange={handleChange}
             sx={{ width: '100%' }}
+            size="small"
           >
             {currencies.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -133,7 +136,7 @@ export default function AddModal() {
             Giá<span style={{ color: 'red' }}>*</span>
           </Typography>
           <FormControl sx={{ width: '100%' }}>
-            <OutlinedInput placeholder="Nhập giá sản phẩm" />
+            <OutlinedInput placeholder="Nhập giá sản phẩm" size="small" />
           </FormControl>
           <Typography
             id="modal-modal-title"
