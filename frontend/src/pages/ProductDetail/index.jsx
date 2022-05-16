@@ -18,7 +18,6 @@ function ProductDetail() {
         sx={{
           background: '#fff',
           width: '80%',
-          height: '80%',
           borderRadius: '20px',
           display: 'flex',
           justifyContent: 'center',
@@ -42,6 +41,7 @@ function ProductDetail() {
                 display: 'flex',
                 color: '#00ADE8',
                 mb: 2,
+                mt: 2,
               }}
             >
               <ArrowBackIcon />
@@ -132,7 +132,7 @@ function ProductDetail() {
           <Grid xs={12} className={styles.suggetion}>
             Gợi Ý Cho Bạn:
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} sx={{ margin: '0px -16px' }}>
             <ul style={{ listStyle: 'none', display: 'flex', padding: '0px' }}>
               <ProductCardView />
               <ProductCardView />

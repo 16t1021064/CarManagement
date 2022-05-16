@@ -28,7 +28,7 @@ const routes = [
     component: ProductDetail,
   },
   {
-    path: '/cap-nhat-san-pham',
+    path: '/cap-nhat-sp',
     component: ProductUpdate,
   },
   {

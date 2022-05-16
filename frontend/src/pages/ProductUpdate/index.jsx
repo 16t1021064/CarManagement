@@ -1,11 +1,7 @@
 import React from 'react';
 
 function ProductUpdate() {
-  return (
-    <div>
-      <h3>Chi tiết sản phẩm</h3>
-    </div>
-  );
+  return <div>abc</div>;
 }
 
 export default ProductUpdate;

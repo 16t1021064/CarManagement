@@ -35,7 +35,7 @@ function ProductCardManage() {
                 textTransform: 'none',
               }}
             >
-              Cập nhật
+              Xoá
             </Button>
           </div>
         </div>

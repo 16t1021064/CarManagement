@@ -8,7 +8,7 @@ export default function ProductTable() {
   return (
     <Grid className={styles.gridtable}>
       <Grid xs={12} className={styles.listitem}>
-        <ul className={styles.list}>
+        <ul className={styles.list} style={{ padding: 0 }}>
           <ProductCard />
           <ProductCard />
           <ProductCard />
