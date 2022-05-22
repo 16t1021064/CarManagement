@@ -40,7 +40,7 @@ function Header() {
       <div className={styles.header}>
         <Grid item xs={2}>
           <div className={styles.logo}>
-            <Link href="./">
+            <Link to="./">
               <svg
                 width={34}
                 height={34}

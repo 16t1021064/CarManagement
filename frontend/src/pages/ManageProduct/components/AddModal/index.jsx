@@ -170,6 +170,7 @@ export default function AddModal() {
                 borderRadius: '15px',
                 width: '164px',
               }}
+              onClick={handleClose}
             >
               Hủy
             </Button>

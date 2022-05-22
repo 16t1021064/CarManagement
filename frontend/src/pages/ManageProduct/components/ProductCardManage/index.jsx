@@ -1,15 +1,18 @@
 import { Button, Grid } from '@mui/material';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import img from '../../../../image/Mazda.jpeg';
 import styles from './index.module.sass';
 
 function ProductCardManage() {
+  const history = useHistory();
+  const handleUpdate = useCallback(() => history.push('/cap-nhat-sp'), [history]);
   return (
     <Grid xs={4} className={styles.item}>
       <li>
         <div className={styles.borderitem}>
           <Link to="/chi-tiet-sp">
-            <img src="https://s1.cdn.autoevolution.com/images/news/ferrari-sp48-unica-officially-unveiled-it-s-a-one-off-in-a-crazy-shade-188107-7.jpg" alt="img" />
+            <img src={img} alt="img" />
           </Link>
           <div className={styles.productname}>Ferarri</div>
           <div className={styles.productbutton}>
@@ -22,6 +25,7 @@ function ProductCardManage() {
                 background: '#6ECB63',
                 textTransform: 'none',
               }}
+              onClick={handleUpdate}
             >
               Cập nhật
             </Button>
