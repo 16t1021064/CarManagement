@@ -5,14 +5,16 @@ import React, { useContext } from 'react';
 // eslint-disable-next-line import/no-cycle
 import { AppContext } from '../../App';
 import MenuListCategory from '../MenuListCategory';
+import MenuListSupplier from '../MenuListSupplier';
 import styles from './index.module.sass';
 
 function SideBar() {
-  const { categories } = useContext(AppContext);
+  const { categories, suppliers } = useContext(AppContext);
   return (
-    <Grid xs={2} className={styles.sidebar} item>
+    <Grid xs={2} className={styles.sidebar}>
       <MenuListCategory categories={categories} />
       <Divider />
+      <MenuListSupplier suppliers={suppliers} />
     </Grid>
   );
 }

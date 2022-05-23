@@ -15,16 +15,16 @@ import OverLayProvider from './components/OverLay/provider';
 import { Container } from './pages/Example/styles';
 // eslint-disable-next-line import/order
 import Grid from '@mui/material/Grid';
-import { getAllCar, getAllCategory } from './api';
+import { getAllCar, getAllCategory, getAllSupplier } from './api';
 
 const routes = [
   {
-    path: ['/quan-ly-sp'],
+    path: ['/quan-ly-sp', '/'],
     exact: true,
     component: ManageProduct,
   },
   {
-    path: ['/danh-sach-sp', '/'],
+    path: ['/danh-sach-sp'],
     component: ProductListView,
   },
   {
@@ -46,22 +46,28 @@ export const AppContext = createContext();
 function App() {
   const [cars, setCars] = useState([]);
   const [categories, setCategories] = useState([]);
-  const initialCategories = async () => {
-    const categoryList = await getAllCategory();
-    setCategories(categoryList);
-  };
+  const [suppliers, setSuppliers] = useState([]);
   const initialCars = async () => {
     const carList = await getAllCar();
     setCars(carList);
   };
+  const initialCategories = async () => {
+    const categoryList = await getAllCategory();
+    setCategories(categoryList);
+  };
+  const initialSuppliers = async () => {
+    const supplierList = await getAllSupplier();
+    setSuppliers(supplierList);
+  };
   useEffect(() => {
     initialCategories();
+    initialSuppliers();
     initialCars();
   }, []);
   return (
     // eslint-disable-next-line no-sequences
     // eslint-disable-next-line object-shorthand
-    <AppContext.Provider value={{ cars, categories }}>
+    <AppContext.Provider value={{ cars, categories, suppliers }}>
       <Container>
         <Grid container spacing={0}>
           <OverLayProvider>

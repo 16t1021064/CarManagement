@@ -13,3 +13,8 @@ export const getAllCategory = async () => {
   const categoryList = await axiosInstance.get(`${API_URL}/category`);
   return categoryList;
 };
+
+export const getAllSupplier = async () => {
+  const supplierList = await axiosInstance.get(`${API_URL}/supplier`);
+  return supplierList;
+};
