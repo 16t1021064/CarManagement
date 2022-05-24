@@ -5,7 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import styles from './index.module.sass';
-import ProductCardView from '../ProductListView/components/ProductCardView';
+import ProductRelatedCard from './ProductRelatedCard';
 
 function ProductDetail() {
   return (
@@ -133,9 +133,9 @@ function ProductDetail() {
           </Grid>
           <Grid xs={12} sx={{ margin: '0px -16px' }}>
             <ul style={{ listStyle: 'none', display: 'flex', padding: '0px' }}>
-              <ProductCardView />
-              <ProductCardView />
-              <ProductCardView />
+              <ProductRelatedCard />
+              <ProductRelatedCard />
+              <ProductRelatedCard />
             </ul>
           </Grid>
         </Box>

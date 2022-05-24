@@ -4,8 +4,9 @@ import axiosInstance from './axios';
 
 const API_URL = 'http://localhost:5001/v1/cars';
 
-export const getAllCar = async () => {
-  const carList = await axiosInstance.get(`${API_URL}`);
+export const getCar = async (paginateInfo) => {
+  const { pageCurrent, pageLimit } = paginateInfo;
+  const carList = await axiosInstance.get(`${API_URL}/${pageCurrent}&${pageLimit}`);
   return carList;
 };
 
@@ -17,4 +18,9 @@ export const getAllCategory = async () => {
 export const getAllSupplier = async () => {
   const supplierList = await axiosInstance.get(`${API_URL}/supplier`);
   return supplierList;
+};
+
+export const getTotalCar = async () => {
+  const totalCar = await axiosInstance.get(`${API_URL}/total`);
+  return totalCar;
 };
