@@ -3,18 +3,30 @@ import React, { useEffect, useState } from 'react';
 import { ListItemText, MenuItem, MenuList } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import styles from './index.module.sass';
+import { getAllCategory } from '../../api';
 
-function MenuListItem({ categories }) {
+function MenuListCategory() {
+  const [categoryList, setCategoryList] = useState([]);
   const [activeObject, setActiveObject] = useState(null);
+  const getAll = async () => {
+    const list = await getAllCategory();
+    list.unshift('Tất cả');
+    setCategoryList(list);
+  };
+  const initialActiveObject = async () => {
+    await setActiveObject(categoryList[0]);
+  };
   useEffect(() => {
-    categories.unshift('Tất cả');
-    setActiveObject(categories[0]);
-  }, [categories]);
+    getAll();
+  }, []);
+  useEffect(() => {
+    initialActiveObject();
+  }, [categoryList]);
   function toggleActive(item) {
     setActiveObject(item);
   }
   function toggleActiveStyles(index) {
-    if (categories[index] === activeObject) {
+    if (categoryList[index] === activeObject) {
       return `${styles.active}`;
     }
     return '';
@@ -25,7 +37,7 @@ function MenuListItem({ categories }) {
         <ListItemText inset>Danh Mục</ListItemText>
         <ArrowDropDownIcon />
       </MenuItem>
-      {categories.map((item, index) => (
+      {categoryList.map((item, index) => (
         <MenuItem
           key={item}
           onClick={() => toggleActive(item)}
@@ -38,4 +50,4 @@ function MenuListItem({ categories }) {
   );
 }
 
-export default MenuListItem;
+export default MenuListCategory;

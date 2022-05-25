@@ -9,10 +9,10 @@ import MenuListSupplier from '../MenuListSupplier';
 import styles from './index.module.sass';
 
 function SideBar() {
-  const { categories, suppliers } = useContext(AppContext);
+  const { suppliers } = useContext(AppContext);
   return (
     <Grid xs={2} className={styles.sidebar}>
-      <MenuListCategory categories={categories} />
+      <MenuListCategory />
       <Divider />
       <MenuListSupplier suppliers={suppliers} />
     </Grid>

@@ -30,7 +30,7 @@ const routes = [
     component: ManageProduct,
   },
   {
-    path: ['/danh-sach-sp'],
+    path: '/danh-sach-sp',
     component: ProductListView,
   },
   {
