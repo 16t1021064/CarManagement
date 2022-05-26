@@ -1,23 +1,22 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable import/no-cycle */
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import Pagination from '@mui/material/Pagination';
+import queryString from 'query-string';
 import Stack from '@mui/material/Stack';
-import { AppContext } from '../../App';
+import { useHistory, useLocation } from 'react-router-dom';
 
-function Paginator() {
+function Paginator({ totalCar }) {
+  const history = useHistory();
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
-  const { total, paginateInfo, setPaginateInfo } = useContext(AppContext);
-  const { pageLimit } = paginateInfo;
-  const countPage = Math.round(total / pageLimit);
-  const handleChange = async (e, value) => {
+  const countPage = Math.round(totalCar / 3);
+  const handleChange = (e, value) => {
     setCurrentPage(value);
+    const parsed = queryString.parse(location.search);
+    parsed.pageCurrent = `${value}`;
+    history.push({ search: `${queryString.stringify(parsed)}` });
   };
-  useEffect(() => {
-    setPaginateInfo({
-      pageLimit: paginateInfo.pageLimit,
-      pageCurrent: currentPage,
-    });
-  }, [currentPage]);
   return (
     <Stack spacing={2}>
       <Pagination

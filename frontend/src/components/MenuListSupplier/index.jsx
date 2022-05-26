@@ -1,13 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import { ListItemText, MenuItem, MenuList } from '@mui/material';
+import queryString from 'query-string';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useHistory, useLocation } from 'react-router-dom';
 import styles from './index.module.sass';
 import { getAllSupplier } from '../../api';
 
 function MenuListSupplier() {
   const [activeObject, setActiveObject] = useState(null);
   const [supplierList, setSupplierList] = useState([]);
+  const location = useLocation();
+  const history = useHistory();
   const getAll = async () => {
     const list = await getAllSupplier();
     list.unshift('Tất cả');
@@ -24,6 +28,9 @@ function MenuListSupplier() {
   }, [supplierList]);
   function toggleActive(item) {
     setActiveObject(item);
+    const parsed = queryString.parse(location.search);
+    parsed.supplier = `${item}`;
+    history.push({ search: `${queryString.stringify(parsed)}` });
   }
   function toggleActiveStyles(index) {
     if (supplierList[index] === activeObject) {
