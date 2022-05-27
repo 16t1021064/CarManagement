@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // eslint-disable-next-line import/named
 import { getCarById } from '../../api';
 import styles from './index.module.sass';
@@ -12,12 +12,15 @@ import ProductRelatedCard from './ProductRelatedCard';
 import { formatPrice } from '../../helper/FormatPrice';
 
 function ProductDetail() {
-  const [currentCar, setCurrentCar] = useState();
+  const [currentCar, setCurrentCar] = useState({});
+  const [relateCar, setRelateCar] = useState([]);
   const { search } = useLocation();
-  const id = new URLSearchParams(search).get('id') || 1;
+  const id = new URLSearchParams(search).get('id') || '';
   const getCar = async (carId) => {
-    const car = await getCarById(carId);
+    const carDetail = await getCarById(carId);
+    const { car, relate } = carDetail;
     setCurrentCar(car);
+    setRelateCar(relate);
   };
   useEffect(() => {
     getCar(id);
@@ -45,23 +48,25 @@ function ProductDetail() {
           }}
         >
           <Grid xs={12} className="headerproductdetail">
-            <Box
-              sx={{
-                background: '#fff',
-                width: '80%',
-                height: '80%',
-                borderRadius: '20px',
-                display: 'flex',
-                color: '#00ADE8',
-                mb: 2,
-                mt: 2,
-              }}
-            >
-              <ArrowBackIcon />
-              <Typography variant="subtitle1" gutterBottom component="div">
-                Quay lại
-              </Typography>
-            </Box>
+            <Link to="danh-sach-sp" style={{ textDecoration: 'none' }}>
+              <Box
+                sx={{
+                  background: '#fff',
+                  width: '80%',
+                  height: '80%',
+                  borderRadius: '20px',
+                  display: 'flex',
+                  color: '#00ADE8',
+                  mb: 2,
+                  mt: 2,
+                }}
+              >
+                <ArrowBackIcon />
+                <Typography variant="subtitle1" gutterBottom component="div">
+                  Quay lại
+                </Typography>
+              </Box>
+            </Link>
           </Grid>
           <Grid xs={12}>
             <Box
@@ -79,7 +84,7 @@ function ProductDetail() {
                     component="div"
                     sx={{ mb: 2 }}
                   >
-                    {currentCar.name}
+                    Tên sản phẩm: {currentCar.name?.toUpperCase()}
                   </Typography>
                 </Grid>
                 <Grid xs={12}>
@@ -94,12 +99,12 @@ function ProductDetail() {
                 </Grid>
                 <Grid xs={12}>
                   <Typography variant="body1" gutterBottom sx={{ mb: 1 }}>
-                    Giá Sản Phẩm: {formatPrice(currentCar.cost)}
+                    Giá Sản Phẩm: {formatPrice(parseInt(currentCar.cost, 10))}
                   </Typography>
                 </Grid>
                 <Grid xs={12}>
                   <Typography variant="body1" gutterBottom sx={{ mb: 1 }}>
-                    Mô Tả Sản PHẩm:
+                    Mô Tả Sản Phẩm:
                   </Typography>
                 </Grid>
                 <Grid xs={12}>
@@ -119,21 +124,16 @@ function ProductDetail() {
                     infiniteLoop
                     centerSlidePercentage={3}
                   >
-                    <div>
-                      <img src="https://dummyimage.com/1000x2000/000/fff" alt="slider1" className={styles.slideImg} />
-                    </div>
-                    <div>
-                      <img src="https://dummyimage.com/1000x2000/000/fff" alt="slider1" className={styles.slideImg} />
-                    </div>
-                    <div>
-                      <img src="https://dummyimage.com/1000x2000/000/fff" alt="slider1" className={styles.slideImg} />
-                    </div>
-                    <div>
-                      <img src="https://dummyimage.com/1000x2000/000/fff" alt="slider1" className={styles.slideImg} />
-                    </div>
-                    <div>
-                      <img src="https://dummyimage.com/1000x2000/000/fff" alt="slider1" className={styles.slideImg} />
-                    </div>
+                    {currentCar.gallery?.map((imageUrl, index) => (
+                      // eslint-disable-next-line react/no-array-index-key
+                      <div key={index}>
+                        <img
+                          src={imageUrl}
+                          alt="slider1"
+                          className={styles.slideImg}
+                        />
+                      </div>
+                    ))}
                   </Carousel>
                 </Box>
               </Grid>
@@ -144,9 +144,9 @@ function ProductDetail() {
           </Grid>
           <Grid xs={12} sx={{ margin: '0px -16px' }}>
             <ul style={{ listStyle: 'none', display: 'flex', padding: '0px' }}>
-              <ProductRelatedCard />
-              <ProductRelatedCard />
-              <ProductRelatedCard />
+              {
+                relateCar?.map((car) => <ProductRelatedCard car={car} key={car.id} />)
+              }
             </ul>
           </Grid>
         </Box>
