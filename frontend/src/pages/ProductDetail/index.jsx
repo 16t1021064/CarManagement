@@ -1,13 +1,27 @@
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
+import { useLocation } from 'react-router-dom';
+// eslint-disable-next-line import/named
+import { getCarById } from '../../api';
 import styles from './index.module.sass';
 import ProductRelatedCard from './ProductRelatedCard';
+import { formatPrice } from '../../helper/FormatPrice';
 
 function ProductDetail() {
+  const [currentCar, setCurrentCar] = useState();
+  const { search } = useLocation();
+  const id = new URLSearchParams(search).get('id') || 1;
+  const getCar = async (carId) => {
+    const car = await getCarById(carId);
+    setCurrentCar(car);
+  };
+  useEffect(() => {
+    getCar(id);
+  }, [id]);
   return (
     <Grid
       xs={10}
@@ -65,22 +79,22 @@ function ProductDetail() {
                     component="div"
                     sx={{ mb: 2 }}
                   >
-                    Ferrari
+                    {currentCar.name}
                   </Typography>
                 </Grid>
                 <Grid xs={12}>
                   <Typography variant="body1" gutterBottom sx={{ mb: 1 }}>
-                    Danh Mục: Xe Máy
+                    Danh Mục: {currentCar.category}
                   </Typography>
                 </Grid>
                 <Grid xs={12}>
                   <Typography variant="body1" gutterBottom sx={{ mb: 1 }}>
-                    Hãng Sản Xuất: Ducati
+                    Hãng Sản Xuất: {currentCar.supplier}
                   </Typography>
                 </Grid>
                 <Grid xs={12}>
                   <Typography variant="body1" gutterBottom sx={{ mb: 1 }}>
-                    Giá Sản Phẩm: $ 100,000,000
+                    Giá Sản Phẩm: {formatPrice(currentCar.cost)}
                   </Typography>
                 </Grid>
                 <Grid xs={12}>
@@ -90,10 +104,7 @@ function ProductDetail() {
                 </Grid>
                 <Grid xs={12}>
                   <Typography variant="body2" gutterBottom sx={{ mb: 1 }}>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Hic, excepturi. Enim nulla, nobis aspernatur at commodi
-                    nostrum. Quis aliquid ipsa q uas deleniti et sit culpa
-                    ducimus quo. Architecto, quos at.
+                    {currentCar.description}
                   </Typography>
                 </Grid>
               </Grid>

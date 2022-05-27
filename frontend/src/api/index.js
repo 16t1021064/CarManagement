@@ -4,9 +4,22 @@ import axiosInstance from './axios';
 
 const API_URL = 'http://localhost:5001/v1/cars';
 
-export const getCar = async (currentPage) => {
+export const getCar = async (currentPage, searchValue, supplier, cate) => {
+  if (supplier === 'Tất cả') {
+    // eslint-disable-next-line no-param-reassign
+    supplier = '';
+  }
+  if (cate === 'Tất cả') {
+    // eslint-disable-next-line no-param-reassign
+    cate = '';
+  }
   const pageLimit = 3;
-  const carInfo = await axiosInstance.get(`${API_URL}/pageCurrent=${currentPage}&pageLimit=${pageLimit}`);
+  const carInfo = await axiosInstance.get(`${API_URL}/?pageCurrent=${currentPage}&pageLimit=${pageLimit}&searchValue=${searchValue}&supplier=${supplier}&category=${cate}`);
+  return carInfo;
+};
+
+export const getCarById = async (id) => {
+  const carInfo = await axiosInstance.get(`${API_URL}/${id}`);
   return carInfo;
 };
 

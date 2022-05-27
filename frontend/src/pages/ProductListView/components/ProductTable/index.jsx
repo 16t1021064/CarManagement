@@ -14,16 +14,23 @@ export default function ProductTable() {
   const [carListView, setCarListView] = useState([]);
   const [totalCar, setTotalCar] = useState();
   const { search } = useLocation();
-  const currentPage = new URLSearchParams(search).get('pageCurrent') || 1;
+  let currentPage = new URLSearchParams(search).get('pageCurrent') || 1;
+  const searchValue = new URLSearchParams(search).get('searchValue') || '';
+  const supplier = new URLSearchParams(search).get('supplier') || '';
+  const cate = new URLSearchParams(search).get('cate') || '';
   const getAll = async () => {
-    const carInfo = await getCar(currentPage);
+    const carInfo = await getCar(currentPage, searchValue, supplier, cate);
     const { carList, total } = carInfo;
     setCarListView(carList);
     setTotalCar(total);
   };
   useEffect(() => {
     getAll();
-  }, [currentPage]);
+  }, []);
+  useEffect(() => {
+    getAll();
+    currentPage = 1;
+  }, [search]);
   return (
     <Grid className={styles.gridtable}>
       <Grid xs={12} className={styles.listitem}>

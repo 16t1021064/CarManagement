@@ -50,7 +50,6 @@ function SearchBox() {
   const location = useLocation();
   const history = useHistory();
   const getSearchValue = (e) => {
-    console.log(e.target.value);
     const parsed = queryString.parse(location.search);
     parsed.searchValue = `${e.target.value}`;
     history.push({ search: `${queryString.stringify(parsed)}` });
