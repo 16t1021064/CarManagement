@@ -13,6 +13,8 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+// var multer = require('multer');
+// var upload = multer();
 
 const app = express();
 
@@ -28,14 +30,25 @@ app.use(helmet());
 app.use(express.json());
 
 // parse urlencoded request body
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 // sanitize request data
 app.use(xss());
 app.use(mongoSanitize());
 
+// for parsing application/json
+app.use(express.json()); 
+
+// for parsing application/x-www-form-urlencoded
+// app.use(express.urlencoded({ extended: true })); 
+
+// // for parsing multipart/form-data
+// app.use(upload.array()); 
+
 // gzip compression
 app.use(compression());
+app.use(express.static('public'));
+
 
 // enable cors
 app.use(cors());
@@ -63,5 +76,6 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
+
 
 module.exports = app;
