@@ -9,7 +9,7 @@ import styles from './index.module.sass';
 
 function SideBar() {
   return (
-    <Grid xs={2} className={styles.sidebar}>
+    <Grid xs={2} className={styles.sidebar} item>
       <MenuListCategory />
       <Divider />
       <MenuListSupplier />

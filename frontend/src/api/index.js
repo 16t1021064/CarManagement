@@ -13,7 +13,7 @@ export const getCar = async (currentPage, searchValue, supplier, cate) => {
     // eslint-disable-next-line no-param-reassign
     cate = '';
   }
-  const pageLimit = 3;
+  const pageLimit = 6;
   const carInfo = await axiosInstance.get(`${API_URL}/?pageCurrent=${currentPage}&pageLimit=${pageLimit}&searchValue=${searchValue}&supplier=${supplier}&category=${cate}`);
   return carInfo;
 };
@@ -36,4 +36,14 @@ export const getAllSupplier = async () => {
 export const getTotalCar = async () => {
   const totalCar = await axiosInstance.get(`${API_URL}/total`);
   return totalCar;
+};
+
+export const createCar = async (formData) => {
+  const data = await axiosInstance.post(`${API_URL}`, formData);
+  return data;
+};
+
+export const deleteCar = async (id) => {
+  const result = await axiosInstance.delete(`${API_URL}/${id}`);
+  return result;
 };

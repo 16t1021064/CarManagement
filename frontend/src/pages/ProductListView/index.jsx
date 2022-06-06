@@ -8,7 +8,7 @@ import styles from './index.module.sass';
 function ProductListView() {
   return (
     <Grid xs={10} className={styles.manageproduct}>
-      <Grid className={styles.tableheader} xs={12}>
+      <Grid xs={12} className={styles.tableheader}>
         <SearchBox />
       </Grid>
       <Grid xs={12} className={styles.producttable}>

@@ -1,20 +1,24 @@
+/* eslint-disable react/prop-types */
 import { Button, Grid } from '@mui/material';
 import React, { useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import img from '../../../../image/Mazda.jpeg';
+import ConfirmDeleteModal from '../ConfirmDeleteModal';
 import styles from './index.module.sass';
 
-function ProductCardManage() {
+function ProductCardManage({ car, setResetCar }) {
   const history = useHistory();
-  const handleUpdate = useCallback(() => history.push('/cap-nhat-sp'), [history]);
+  const handleUpdate = useCallback(() => history.push(`/cap-nhat-sp?id=${car.id}`), [history]);
   return (
     <Grid xs={4} className={styles.item}>
       <li>
         <div className={styles.borderitem}>
-          <Link to="/chi-tiet-sp">
-            <img src={img} alt="img" />
+          <Link to={`/chi-tiet-sp?id=${car.id}`}>
+            <div className={styles.imgarea}>
+              <img src={car.thumnail} alt="img" />
+            </div>
           </Link>
-          <div className={styles.productname}>Ferarri</div>
+          <div className={styles.productname}>{car.name}</div>
           <div className={styles.productbutton}>
             <Button
               variant="contained"
@@ -29,18 +33,7 @@ function ProductCardManage() {
             >
               Cập nhật
             </Button>
-            <Button
-              variant="contained"
-              size="small"
-              sx={{
-                mt: 1,
-                width: '94px',
-                background: 'red',
-                textTransform: 'none',
-              }}
-            >
-              Xoá
-            </Button>
+            <ConfirmDeleteModal carName={car.name} carId={car.id} setResetCar={setResetCar} />
           </div>
         </div>
       </li>

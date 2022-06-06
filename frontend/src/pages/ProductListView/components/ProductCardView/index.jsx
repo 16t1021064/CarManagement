@@ -11,7 +11,9 @@ function ProductCardManage({ car }) {
       <li>
         <div className={styles.borderitem}>
           <Link to={`/chi-tiet-sp?id=${car.id}`}>
-            <img src={car.thumnail} alt="img" />
+            <div className={styles.imgarea}>
+              <img src={car.thumnail} alt="img" />
+            </div>
           </Link>
           <div className={styles.productname}>{car.name}</div>
           <div className={styles.productprice}>{formatPrice(car.cost)}</div>

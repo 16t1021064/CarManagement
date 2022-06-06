@@ -10,7 +10,7 @@ function Paginator({ totalCar }) {
   const history = useHistory();
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
-  const countPage = Math.ceil(totalCar / 3);
+  const countPage = Math.ceil(totalCar / 6) || 0;
   const handleChange = (e, value) => {
     setCurrentPage(value);
     const parsed = queryString.parse(location.search);
@@ -18,7 +18,7 @@ function Paginator({ totalCar }) {
     history.push({ search: `${queryString.stringify(parsed)}` });
   };
   return (
-    <Stack spacing={2}>
+    <Stack>
       <Pagination
         count={countPage}
         variant="outlined"

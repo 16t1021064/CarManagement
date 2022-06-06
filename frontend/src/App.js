@@ -48,7 +48,7 @@ function App() {
     // eslint-disable-next-line no-sequences
     // eslint-disable-next-line object-shorthand
     <Container>
-      <Grid container spacing={0}>
+      <Grid container>
         <OverLayProvider>
           <Router>
             <Header />
