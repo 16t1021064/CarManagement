@@ -62,8 +62,6 @@ const testUpload = async (req, res) => {
 
 const createCar = catchAsync(async (req, res) => {
       const url = req.protocol + '://' + req.get('host');
-      console.log(req.body);
-      console.log(req.file);
         const car = {
             name: req.body.name,
             category: req.body.category,
@@ -71,12 +69,47 @@ const createCar = catchAsync(async (req, res) => {
             cost: req.body.cost,
             thumnail: url + '/' + req.file?.filename,
             description: req.body.description,
-            gallery: [],
+            gallery: ['','','',''],
         }
         const returnCar = await carService.createCar(car);
         res.send(returnCar).status(httpStatus.CREATED);
 })
 
+const updateCar = catchAsync(async (req, res) => {
+    const url = req.protocol + '://' + req.get('host');
+    const {id} = req.params
+    const {name, supplier, category, cost, description, galleryString, gallery, galleryCheck } = req.body;
+    let car = {
+        name: name,
+        supplier:  supplier,
+        category: category,
+        cost: cost,
+        description,
+    }
+    if(req.files.thumnail) {
+        car.thumnail = url + '/' + req.files?.thumnail[0]?.filename;
+    }
+    let place = 0;
+    car.gallery=["","","",""];
+    for(let i = 0 ; i< 4; i++){
+        if (galleryString[i] === '' && galleryCheck[i] === 'exist') {
+            console.log('vao 1');
+            car.gallery[i] = url + '/' + req.files?.gallery[place]?.filename;
+            place++;
+        } else 
+          if (galleryString[i] === '' && galleryCheck[i] !== 'exist') {
+            console.log('vao 2');
+            car.gallery[i] = '';
+        }else
+          if(galleryString[i]!=='' && galleryCheck[i] !== 'exist'){
+            console.log(galleryString[i]);
+            car.gallery[i] = galleryString[i];
+        }
+    }
+    console.log(car);
+    const carUpdated = await carService.updateCar(id, car);
+    res.send(carUpdated).status(httpStatus[204]);
+});
 module.exports = {
     getCar,
     createCar,
@@ -85,4 +118,6 @@ module.exports = {
     getCarById,
     uploadThumnail,
     testUpload,
+    uploadUpdate,
+    updateCar,
 }

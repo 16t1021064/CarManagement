@@ -1,3 +1,6 @@
+/* eslint-disable no-unreachable */
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import React, { useEffect, useState } from 'react';
@@ -124,16 +127,22 @@ function ProductDetail() {
                     infiniteLoop
                     centerSlidePercentage={3}
                   >
-                    {currentCar.gallery?.map((imageUrl, index) => (
-                      // eslint-disable-next-line react/no-array-index-key
-                      <div key={index}>
-                        <img
-                          src={imageUrl}
-                          alt="slider1"
-                          className={styles.slideImg}
-                        />
-                      </div>
-                    ))}
+                    {
+                      currentCar.gallery?.map((item) => {
+                        if (item !== '') {
+                          return (
+                            <div key={item}>
+                              <img
+                                src={item}
+                                alt=""
+                                className={styles.slideImg}
+                              />
+                            </div>
+                          );
+                          return;
+                        }
+                      })
+                    }
                   </Carousel>
                 </Box>
               </Grid>

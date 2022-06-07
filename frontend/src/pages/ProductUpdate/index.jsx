@@ -17,7 +17,12 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
-import { getAllCategory, getAllSupplier, getCarById } from '../../api';
+import {
+  getAllCategory,
+  getAllSupplier,
+  getCarById,
+  updateCar,
+} from '../../api';
 import AddImageSlide from './AddImageSlide';
 import styles from './index.module.sass';
 
@@ -91,18 +96,31 @@ function ProductUpdate() {
     }
     setSelectedThumnail(e.target.files[0]);
   };
-  const onSubmit = (data) => {
-    console.log(data);
-    console.log(selectedThumnail);
-    console.log(galleryStr);
+  const onSubmit = async (data) => {
     console.log(galleryFile);
-    // const formData = new FormData();
-    // formData.append('name', data.name);
-    // formData.append('supplier', data.supplier);
-    // formData.append('category', data.category);
-    // formData.append('cost', data.cost);
-    // formData.append('description', data.description);
-    // formData.append('thumnail', selectedThumnail);
+    console.log(galleryStr);
+    console.log(selectedThumnail);
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('supplier', data.supplier);
+    formData.append('category', data.category);
+    formData.append('cost', data.cost);
+    formData.append('description', data.description);
+    formData.append('thumnail', selectedThumnail);
+    for (let i = 0; i < galleryStr.length; i += 1) {
+      formData.append('galleryString', galleryStr[i]);
+    }
+    for (let i = 0; i < galleryFile.length; i += 1) {
+      if (galleryFile[i]) {
+        formData.append('galleryCheck', 'exist');
+      } else {
+        formData.append('galleryCheck', 'not exist');
+      }
+    }
+    for (let i = 0; i < galleryFile.length; i += 1) {
+      formData.append('gallery', galleryFile[i]);
+    }
+    await updateCar(id, formData);
   };
   const renderThumb = () => {
     if (selectedThumnail) {

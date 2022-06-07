@@ -22,7 +22,7 @@ router
 router
     .route('/:id')
     .get(carController.getCarById) 
-    // .put(carController.updateCar);
+    .put(carController.uploadUpdate, carController.updateCar);
 
 router
     .route('/testUpload')

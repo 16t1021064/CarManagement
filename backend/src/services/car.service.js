@@ -57,6 +57,11 @@ const getCarById = async (id) => {
     return { car, relate };
 }
 
+const updateCar = async (id , car) => {
+    const carUpdated = await Car.findByIdAndUpdate(id , car);
+    return carUpdated;
+}
+
 module.exports = {
     getAllCar,
     createCar,
@@ -64,4 +69,5 @@ module.exports = {
     getAllSupplier,
     paginate,
     getCarById,
+    updateCar
 }

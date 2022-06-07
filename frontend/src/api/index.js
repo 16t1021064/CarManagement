@@ -47,3 +47,8 @@ export const deleteCar = async (id) => {
   const result = await axiosInstance.delete(`${API_URL}/${id}`);
   return result;
 };
+
+export const updateCar = async (id, data) => {
+  const result = await axiosInstance.put(`${API_URL}/${id}`, data);
+  return result;
+};
