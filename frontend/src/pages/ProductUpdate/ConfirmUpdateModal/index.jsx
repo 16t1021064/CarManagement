@@ -6,16 +6,12 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import styles from './index.module.sass';
-import { deleteCar } from '../../../../api';
-import AddModalSuccess from '../AddModalSuccess';
 
 // eslint-disable-next-line react/prop-types
-export default function ConfirmDeleteModal({ carName, carId, setResetCar }) {
+export default function ConfirmUpdateModal() {
   const [open, setOpen] = useState(false);
-  const [modalStatus, setModalStatus] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleOpenModal = (status) => setModalStatus(status);
   const style = {
     position: 'absolute',
     top: '50%',
@@ -28,11 +24,8 @@ export default function ConfirmDeleteModal({ carName, carId, setResetCar }) {
     p: 4,
     borderRadius: '20px',
   };
-  const deleteCarById = async (id) => {
-    await deleteCar(id);
-    handleClose();
-    setResetCar(true);
-    handleOpenModal(true);
+  const updateCar = async () => {
+
   };
   return (
     <>
@@ -49,7 +42,6 @@ export default function ConfirmDeleteModal({ carName, carId, setResetCar }) {
       >
         Xoá
       </Button>
-      <AddModalSuccess openAddSuccess={modalStatus} message="Xoá sản phẩm thành công!" />
       <Modal
         open={open}
         onClose={handleClose}
@@ -76,10 +68,7 @@ export default function ConfirmDeleteModal({ carName, carId, setResetCar }) {
           <Grid xs={12}>
             <Box sx={{ textAlign: 'center', mt: 5 }}>
               <div className={styles.fontmessage}>
-                Bạn có chắc muốn xoá sản phẩm <span className={styles.redString} style={{ textTransform: 'Uppercase' }}>{carName}?</span>
-              </div>
-              <div className={styles.fontmessage}>
-                Sản phẩm này sẽ bị <span className={styles.redString}>xoá vĩnh viễn</span>
+                Bạn có chắc muốn cập nhật sản phẩm <span className={styles.redString} style={{ textTransform: 'Uppercase' }}>{carName}?</span>
               </div>
             </Box>
           </Grid>
@@ -88,8 +77,8 @@ export default function ConfirmDeleteModal({ carName, carId, setResetCar }) {
               <Button variant="outlined" size="large" className={styles.buttonConfirm} onClick={handleClose}>
                 Huỷ
               </Button>
-              <Button variant="contained" color="error" size="large" className={styles.buttonConfirm} onClick={() => deleteCarById(carId)}>
-                Xoá
+              <Button variant="contained" color="error" size="large" className={styles.buttonConfirm} onClick={() => updateCar(carId)}>
+                Cập nhật
               </Button>
             </Box>
           </Grid>

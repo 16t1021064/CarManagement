@@ -73,7 +73,7 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
     handleClose(true);
     setAddSuccessStatus(true);
     setResetCar(true);
-    reset();
+    reset({});
   };
   return (
     <>

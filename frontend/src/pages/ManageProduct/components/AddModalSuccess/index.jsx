@@ -2,13 +2,22 @@
 import { Modal, Box, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import { useHistory, useLocation } from 'react-router-dom';
 import styles from './index.module.sass';
 import img from '../../../../image/Shape.jpg';
 
 export default function AddModalSuccess({ openAddSuccess, message }) {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const history = useHistory();
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    if (location.pathname === '/cap-nhat-sp') {
+      history.push('quan-ly-sp');
+    }
+  };
+
   useEffect(() => {
     if (openAddSuccess) {
       handleOpen();

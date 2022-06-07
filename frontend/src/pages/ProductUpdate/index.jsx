@@ -16,13 +16,14 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   getAllCategory,
   getAllSupplier,
   getCarById,
   updateCar,
 } from '../../api';
+import AddModalSuccess from '../ManageProduct/components/AddModalSuccess';
 import AddImageSlide from './AddImageSlide';
 import styles from './index.module.sass';
 
@@ -36,6 +37,12 @@ function ProductUpdate() {
   const [preview, setPreview] = useState();
   const [galleryStr, setGalleryStr] = useState([]);
   const [galleryFile, setGalleryFile] = useState([undefined, undefined, undefined, undefined]);
+  const [openModalUpdateSuccess, setOpenModalUpdateSuccess] = useState(false);
+  const history = useHistory();
+  const routerChange = () => {
+    const path = 'quan-ly-sp';
+    history.push(path);
+  };
   const {
     register,
     handleSubmit,
@@ -97,9 +104,6 @@ function ProductUpdate() {
     setSelectedThumnail(e.target.files[0]);
   };
   const onSubmit = async (data) => {
-    console.log(galleryFile);
-    console.log(galleryStr);
-    console.log(selectedThumnail);
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('supplier', data.supplier);
@@ -121,6 +125,8 @@ function ProductUpdate() {
       formData.append('gallery', galleryFile[i]);
     }
     await updateCar(id, formData);
+    setOpenModalUpdateSuccess(true);
+    setOpenModalUpdateSuccess(false);
   };
   const renderThumb = () => {
     if (selectedThumnail) {
@@ -255,6 +261,7 @@ function ProductUpdate() {
                   borderRadius: '15px',
                   width: '164px',
                 }}
+                onClick={routerChange}
               >
                 Hủy
               </Button>
@@ -267,7 +274,7 @@ function ProductUpdate() {
                 }}
                 type="submit"
               >
-                Thêm
+                Lưu
               </Button>
             </Grid>
           </Grid>
@@ -318,6 +325,7 @@ function ProductUpdate() {
             </Grid>
           </Grid>
         </Box>
+        <AddModalSuccess openAddSuccess={openModalUpdateSuccess} message="Cập nhật sản phẩm thành công !!!" />
       </form>
     </Grid>
   );
