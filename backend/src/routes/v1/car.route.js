@@ -22,7 +22,8 @@ router
 router
     .route('/:id')
     .get(carController.getCarById) 
-    .put(carController.uploadUpdate, carController.updateCar);
+    .put(carController.uploadUpdate, carController.updateCar)
+    .delete(carController.deleteCar);
 
 router
     .route('/testUpload')

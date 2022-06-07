@@ -62,6 +62,11 @@ const updateCar = async (id , car) => {
     return carUpdated;
 }
 
+const deleteCar = async (id) => {
+    const car = await Car.findByIdAndRemove(id);
+    return car;
+}
+
 module.exports = {
     getAllCar,
     createCar,
@@ -69,5 +74,6 @@ module.exports = {
     getAllSupplier,
     paginate,
     getCarById,
-    updateCar
+    updateCar,
+    deleteCar
 }

@@ -112,6 +112,12 @@ const updateCar = catchAsync(async (req, res) => {
     const carUpdated = await carService.updateCar(id, car);
     res.send(carUpdated).status(httpStatus[204]);
 });
+
+const deleteCar = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const car = await carService.deleteCar(id);
+    res.send(car).status(httpStatus[204]);
+})
 module.exports = {
     getCar,
     createCar,
@@ -122,4 +128,5 @@ module.exports = {
     testUpload,
     uploadUpdate,
     updateCar,
+    deleteCar,
 }
