@@ -70,6 +70,7 @@ const createCar = catchAsync(async (req, res) => {
             thumnail: url + '/' + req.file?.filename,
             description: req.body.description,
             gallery: ['','','',''],
+            createdAt: Date.now(),
         }
         const returnCar = await carService.createCar(car);
         res.send(returnCar).status(httpStatus.CREATED);
@@ -84,7 +85,8 @@ const updateCar = catchAsync(async (req, res) => {
         supplier:  supplier,
         category: category,
         cost: cost,
-        description,
+        description: description,
+        createdAt: Date.now(),
     }
     if(req.files.thumnail) {
         car.thumnail = url + '/' + req.files?.thumnail[0]?.filename;

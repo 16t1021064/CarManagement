@@ -41,7 +41,7 @@ const paginate = async (pageLimit, pageCurrent, supplier, category, searchValue)
     if(searchValue !== ''){
         query = query.where({'name': { $regex: '.*' + searchValue + '.*' } });
     }
-    const carList = await Car.find(query).select().limit(parseInt(pageLimit)).skip((parseInt(pageCurrent)-1)*parseInt(pageLimit));
+    const carList = await Car.find(query).select().sort([['createdAt', 'descending']]).limit(parseInt(pageLimit)).skip((parseInt(pageCurrent)-1)*parseInt(pageLimit));
     const total = await Car.find(query).select().countDocuments();
 
     return {carList , total};
