@@ -24,6 +24,7 @@ function MenuListCategory() {
     setActiveObject(item);
     const parsed = queryString.parse(location.search);
     parsed.cate = `${item}`;
+    parsed.pageCurrent = 1;
     history.push({ search: `${queryString.stringify(parsed)}` });
   }
   function toggleActiveStyles(index) {

@@ -53,6 +53,7 @@ function SearchBox() {
   const getSearchValue = (e) => {
     const parsed = queryString.parse(location.search);
     parsed.searchValue = `${e.target.value}`;
+    parsed.pageCurrent = 1;
     history.push({ search: `${queryString.stringify(parsed)}` });
   };
   const curSearchValue = new URLSearchParams(location.search).get('searchValue');
