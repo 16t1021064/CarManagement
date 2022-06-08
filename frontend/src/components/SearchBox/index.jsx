@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import queryString from 'query-string';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
@@ -47,6 +47,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 function SearchBox() {
+  const searchRef = useRef();
   const location = useLocation();
   const history = useHistory();
   const getSearchValue = (e) => {
@@ -54,7 +55,12 @@ function SearchBox() {
     parsed.searchValue = `${e.target.value}`;
     history.push({ search: `${queryString.stringify(parsed)}` });
   };
-
+  const curSearchValue = new URLSearchParams(location.search).get('searchValue');
+  useEffect(() => {
+    if (curSearchValue) {
+      searchRef.current.value = curSearchValue;
+    }
+  }, [curSearchValue]);
   return (
     <Grid xs={3} className={styles.searchbox}>
       <Search className={styles.searchfield}>
@@ -63,7 +69,7 @@ function SearchBox() {
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Tìm Kiếm"
-          inputProps={{ 'aria-label': 'search' }}
+          inputProps={{ 'aria-label': 'search', ref: searchRef }}
           onChange={getSearchValue}
         />
       </Search>
