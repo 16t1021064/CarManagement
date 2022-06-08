@@ -3,7 +3,7 @@ import { Box, Grid } from "@mui/material";
 // eslint-disable-next-line quotes
 import React, { useEffect, useState } from "react";
 // eslint-disable-next-line quotes
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 // eslint-disable-next-line quotes
 import styles from "./index.module.sass";
 
@@ -12,17 +12,18 @@ function Header() {
     routes: [
       {
         id: 0,
-        to: '/danh-sach-sp',
-        name: 'Sản phẩm',
+        to: '/quan-ly-sp',
+        name: 'Quản Lý Sản phẩm',
       },
       {
         id: 1,
-        to: '/quan-ly-sp',
-        name: 'Quản Lý Sản phẩm',
+        to: '/danh-sach-sp',
+        name: 'Sản Phẩm',
       },
     ],
     activeObject: null,
   });
+  const location = useLocation();
   useEffect(() => {
     setList({ ...list, activeObject: list.routes[0] });
   }, []);
@@ -35,6 +36,13 @@ function Header() {
     }
     return '';
   }
+  useEffect(() => {
+    if (location.pathname === '/danh-sach-sp') {
+      setList({ ...list, activeObject: list.routes[1] });
+    } else {
+      setList({ ...list, activeObject: list.routes[0] });
+    }
+  }, [location]);
   return (
     <Grid xs={12}>
       <Box>

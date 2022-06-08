@@ -17,15 +17,9 @@ function MenuListCategory() {
     list.unshift('Tất cả');
     setCategoryList(list);
   };
-  const initialActiveObject = async () => {
-    await setActiveObject(categoryList[0]);
-  };
   useEffect(() => {
     getAll();
   }, []);
-  useEffect(() => {
-    initialActiveObject();
-  }, [categoryList]);
   function toggleActive(item) {
     setActiveObject(item);
     const parsed = queryString.parse(location.search);
@@ -38,6 +32,14 @@ function MenuListCategory() {
     }
     return '';
   }
+  useEffect(() => {
+    const currentCategory = new URLSearchParams(location.search).get('cate');
+    if (currentCategory) {
+      setActiveObject(currentCategory);
+    } else {
+      setActiveObject(categoryList[0]);
+    }
+  }, [location, categoryList]);
   return (
     <MenuList className={styles.menulistitem}>
       <MenuItem>

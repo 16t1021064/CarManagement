@@ -41,7 +41,7 @@ export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCa
         <ul className={styles.list} style={{ padding: 0 }}>
           {carListUpdate.map((car) => {
             return (
-              <ProductCardManage car={car} setResetCar={setResetCar} />
+              <ProductCardManage car={car} setResetCar={setResetCar} key={car.id} />
             );
           })}
         </ul>
