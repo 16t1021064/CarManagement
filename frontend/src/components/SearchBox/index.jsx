@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import { Grid } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import queryString from 'query-string';
@@ -48,13 +50,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 function SearchBox() {
   const searchRef = useRef();
+  const typingTimeoutRef = useRef(null);
   const location = useLocation();
   const history = useHistory();
   const getSearchValue = (e) => {
-    const parsed = queryString.parse(location.search);
-    parsed.searchValue = `${e.target.value}`;
-    parsed.pageCurrent = 1;
-    history.push({ search: `${queryString.stringify(parsed)}` });
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+    typingTimeoutRef.current = setTimeout(() => {
+      const parsed = queryString.parse(location.search);
+      parsed.searchValue = `${e.target.value}`;
+      parsed.pageCurrent = 1;
+      history.push({ search: `${queryString.stringify(parsed)}` });
+    }, 600);
   };
   const curSearchValue = new URLSearchParams(location.search).get('searchValue');
   useEffect(() => {

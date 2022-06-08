@@ -11,6 +11,8 @@ import {
   TextareaAutosize,
   TextField,
 } from '@mui/material';
+import { useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import Modal from '@mui/material/Modal';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useForm } from 'react-hook-form';
@@ -23,6 +25,7 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
   const [supplier, setSupplier] = useState('');
   const [categories, setCategories] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
+  const history = useHistory();
   const initialCate = async () => {
     const cate = await getAllCategory();
     setCategories(cate);
@@ -74,6 +77,7 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
     setAddSuccessStatus(true);
     setResetCar(true);
     reset({});
+    history.push({ search: `${queryString.stringify({})}` });
   };
   return (
     <>

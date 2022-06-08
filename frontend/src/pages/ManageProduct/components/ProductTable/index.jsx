@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable arrow-body-style */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Grid } from '@mui/material';
 import styles from './index.module.sass';
@@ -8,11 +8,13 @@ import ProductCardManage from '../ProductCardManage';
 import Paginator from '../../../../components/Paginator';
 import { getCar } from '../../../../api';
 import image from '../../../../image/not-found.png';
+import { OverLayContext } from '../../../../components/OverLay/provider';
 
 export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCar }) {
   const [carListUpdate, setCarListUpdate] = useState([]);
   const [totalCar, setTotalCar] = useState();
   const { search } = useLocation();
+  const { setLoading } = useContext(OverLayContext);
   const currentPage = new URLSearchParams(search).get('pageCurrent') || 1;
   const searchValue = new URLSearchParams(search).get('searchValue') || '';
   const supplier = new URLSearchParams(search).get('supplier') || '';
@@ -22,6 +24,7 @@ export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCa
     const { carList, total } = carInfo;
     await setTotalCar(total);
     await setCarListUpdate(carList);
+    setLoading(false);
   };
   useEffect(() => {
     getAll();

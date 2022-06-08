@@ -3,7 +3,7 @@
 /* eslint-disable array-callback-return */
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -13,14 +13,18 @@ import { getCarById } from '../../api';
 import styles from './index.module.sass';
 import ProductRelatedCard from './ProductRelatedCard';
 import { formatPrice } from '../../helper/FormatPrice';
+import { OverLayContext } from '../../components/OverLay/provider';
 
 function ProductDetail() {
   const [currentCar, setCurrentCar] = useState({});
   const [relateCar, setRelateCar] = useState([]);
   const { search } = useLocation();
+  const { setLoading } = useContext(OverLayContext);
   const id = new URLSearchParams(search).get('id') || '';
   const getCar = async (carId) => {
+    setLoading(true);
     const carDetail = await getCarById(carId);
+    setLoading(false);
     const { car, relate } = carDetail;
     setCurrentCar(car);
     setRelateCar(relate);

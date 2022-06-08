@@ -20,7 +20,7 @@ function Paginator({ totalCar }) {
   const page = new URLSearchParams(location.search).get('pageCurrent');
   useEffect(() => {
     if (page) {
-      setCurrentPage(page);
+      setCurrentPage(parseInt(page, 10));
     }
   }, [page]);
   return (
