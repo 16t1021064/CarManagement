@@ -2,11 +2,12 @@
 /* eslint-disable arrow-body-style */
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import styles from './index.module.sass';
 import ProductCardManage from '../ProductCardManage';
 import Paginator from '../../../../components/Paginator';
 import { getCar } from '../../../../api';
+import image from '../../../../image/not-found.png';
 
 export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCar }) {
   const [carListUpdate, setCarListUpdate] = useState([]);
@@ -35,20 +36,32 @@ export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCa
       setResetCar(false);
     }
   }, [resetCar]);
-  return (
-    <Grid className={styles.gridtable}>
-      <Grid xs={12} className={styles.listitem}>
-        <ul className={styles.list} style={{ padding: 0 }}>
-          {carListUpdate.map((car) => {
-            return (
-              <ProductCardManage car={car} setResetCar={setResetCar} key={car.id} />
-            );
-          })}
-        </ul>
+  const renderTable = () => {
+    if (totalCar === 0) {
+      return (
+        <Grid className={styles.gridtable}>
+          <Box className={styles.notfound}>
+            <img alt="" src={image} className={styles.img} />
+          </Box>
+        </Grid>
+      );
+    }
+    return (
+      <Grid className={styles.gridtable}>
+        <Grid xs={12} className={styles.listitem}>
+          <ul className={styles.list} style={{ padding: 0 }}>
+            {carListUpdate.map((car) => {
+              return (
+                <ProductCardManage car={car} setResetCar={setResetCar} key={car.id} />
+              );
+            })}
+          </ul>
+        </Grid>
+        <Grid xs={12} className={styles.paginator}>
+          <Paginator totalCar={totalCar} />
+        </Grid>
       </Grid>
-      <Grid xs={12} className={styles.paginator}>
-        <Paginator totalCar={totalCar} />
-      </Grid>
-    </Grid>
-  );
+    );
+  };
+  return renderTable();
 }

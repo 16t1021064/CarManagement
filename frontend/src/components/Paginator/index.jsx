@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-cycle */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import queryString from 'query-string';
 import Stack from '@mui/material/Stack';
@@ -17,6 +17,12 @@ function Paginator({ totalCar }) {
     parsed.pageCurrent = `${value}`;
     history.push({ search: `${queryString.stringify(parsed)}` });
   };
+  const page = new URLSearchParams(location.search).get('pageCurrent');
+  useEffect(() => {
+    if (page) {
+      setCurrentPage(page);
+    }
+  }, [page]);
   return (
     <Stack>
       <Pagination

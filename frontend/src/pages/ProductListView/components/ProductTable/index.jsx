@@ -2,17 +2,18 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import styles from './index.module.sass';
 // eslint-disable-next-line import/no-cycle
 // eslint-disable-next-line import/no-cycle
 import Paginator from '../../../../components/Paginator';
 import ProductCard from '../ProductCardView';
 import { getCar } from '../../../../api';
+import image from '../../../../image/not-found.png';
 
 export default function ProductTable() {
   const [carListView, setCarListView] = useState([]);
-  const [totalCar, setTotalCar] = useState();
+  const [totalCar, setTotalCar] = useState(0);
   const { search } = useLocation();
   let currentPage = new URLSearchParams(search).get('pageCurrent') || 1;
   const searchValue = new URLSearchParams(search).get('searchValue') || '';
@@ -31,20 +32,32 @@ export default function ProductTable() {
     getAll();
     currentPage = 1;
   }, [search]);
-  return (
-    <Grid className={styles.gridtable}>
-      <Grid xs={12} className={styles.listitem}>
-        <ul className={styles.list} style={{ padding: 0 }}>
-          {carListView.map((car) => {
-            return (
-              <ProductCard car={car} key={car.id} />
-            );
-          })}
-        </ul>
+  const renderTable = () => {
+    if (totalCar === 0) {
+      return (
+        <Grid className={styles.gridtable}>
+          <Box className={styles.notfound}>
+            <img alt="" src={image} className={styles.img} />
+          </Box>
+        </Grid>
+      );
+    }
+    return (
+      <Grid xs={12} className={styles.gridtable}>
+        <Grid xs={12} className={styles.listitem}>
+          <ul className={styles.list} style={{ padding: 0 }}>
+            {carListView.map((car) => {
+              return (
+                <ProductCard car={car} key={car.id} />
+              );
+            })}
+          </ul>
+        </Grid>
+        <Grid xs={12} className={styles.paginator}>
+          <Paginator totalCar={totalCar} />
+        </Grid>
       </Grid>
-      <Grid xs={12} className={styles.paginator}>
-        <Paginator totalCar={totalCar} />
-      </Grid>
-    </Grid>
-  );
+    );
+  };
+  return renderTable();
 }
