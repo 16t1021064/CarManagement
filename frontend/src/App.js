@@ -16,6 +16,7 @@ import OverLayProvider from './components/OverLay/provider';
 import { Container } from './pages/Example/styles';
 // eslint-disable-next-line import/order
 import Grid from '@mui/material/Grid';
+import NotFound from './pages/NotFound';
 
 const routes = [
   {
@@ -28,16 +29,20 @@ const routes = [
     component: ProductListView,
   },
   {
-    path: '/chi-tiet-sp',
+    path: '/chi-tiet-sp/:id',
     component: ProductDetail,
   },
   {
-    path: '/cap-nhat-sp',
+    path: '/cap-nhat-sp/:id',
     component: ProductUpdate,
   },
   {
     path: '/example',
     component: ExamplePage,
+  },
+  {
+    path: '/not-found',
+    component: NotFound,
   },
 ];
 

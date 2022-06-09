@@ -10,7 +10,7 @@ function ProductRelatedCard({ car }) {
     <Grid xs={4} className={styles.item}>
       <li>
         <div className={styles.borderitem}>
-          <Link to={`/chi-tiet-sp?id=${car?.id}`}>
+          <Link to={`/chi-tiet-sp/${car?.id}`}>
             <div className={styles.imgarea}>
               <img src={car.thumnail} alt="img" />
             </div>

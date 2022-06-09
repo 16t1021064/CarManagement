@@ -1,15 +1,16 @@
 const express = require('express');
 const carController = require('../../controllers/car.controller');
-
+const carValidation = require('../../validations/car.validation')
+const validate = require('../../middlewares/validate');
 const router = express.Router();
 
 router
     .route('/')
-    .get(carController.getCar); 
+    .get(validate(carValidation.getCar) ,carController.getCar); 
 
 router
     .route('/')
-    .post(carController.uploadThumnail, carController.createCar);
+    .post(carController.uploadThumnail, validate(carValidation.createCar), carController.createCar);
 
 router
     .route('/category')
@@ -21,7 +22,7 @@ router
 
 router
     .route('/:id')
-    .get(carController.getCarById) 
+    .get(validate(carValidation.getCarById), carController.getCarById) 
     .put(carController.uploadUpdate, carController.updateCar)
     .delete(carController.deleteCar);
 

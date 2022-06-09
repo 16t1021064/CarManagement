@@ -8,12 +8,12 @@ import styles from './index.module.sass';
 
 function ProductCardManage({ car, setResetCar }) {
   const history = useHistory();
-  const handleUpdate = useCallback(() => history.push(`/cap-nhat-sp?id=${car.id}`), [history]);
+  const handleUpdate = useCallback(() => history.push(`/cap-nhat-sp/${car.id}`), [history]);
   return (
     <Grid xs={4} className={styles.item}>
       <li>
         <div className={styles.borderitem}>
-          <Link to={`/chi-tiet-sp?id=${car.id}`}>
+          <Link to={`/chi-tiet-sp/${car.id}`}>
             <div className={styles.imgarea}>
               <img src={car.thumnail} alt="img" />
             </div>

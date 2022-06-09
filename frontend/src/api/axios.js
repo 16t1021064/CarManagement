@@ -46,6 +46,10 @@ axiosInstance.interceptors.response.use(
       toast.error('System has an error');
       return;
     }
+    if (statusCode === 400) {
+      window.location.href = '/not-found';
+      return;
+    }
     throw error;
   },
 );

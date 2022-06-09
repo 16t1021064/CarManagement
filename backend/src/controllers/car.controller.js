@@ -24,7 +24,6 @@ const getCar = catchAsync(async (req, res) => {
 const getCarById = catchAsync(async (req, res) => {
     const { id } = req.params;
     const carDetail = await carService.getCarById(id);
-    //todo: Chuwa xu ly
     res.status(httpStatus.OK).send(carDetail);
 })
 

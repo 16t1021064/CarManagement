@@ -14,15 +14,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import {
   getAllCategory,
   getAllSupplier,
   getCarById,
   updateCar,
 } from '../../api';
+import { OverLayContext } from '../../components/OverLay/provider';
 import AddModalSuccess from '../ManageProduct/components/AddModalSuccess';
 import AddImageSlide from './AddImageSlide';
 import styles from './index.module.sass';
@@ -38,6 +39,7 @@ function ProductUpdate() {
   const [galleryStr, setGalleryStr] = useState([]);
   const [galleryFile, setGalleryFile] = useState([undefined, undefined, undefined, undefined]);
   const [openModalUpdateSuccess, setOpenModalUpdateSuccess] = useState(false);
+  const { setLoading } = useContext(OverLayContext);
   const history = useHistory();
   const routerChange = () => {
     const path = 'quan-ly-sp';
@@ -65,8 +67,10 @@ function ProductUpdate() {
     const sup = await getAllSupplier();
     setSuppliers(sup);
   };
-  const id = new URLSearchParams(search).get('id') || '';
+  // eslint-disable-next-line new-cap
+  const { id } = useParams();
   const getCarCurrent = async () => {
+    setLoading(true);
     const { car } = await getCarById(id);
     setCarCurrent(car);
     reset({
@@ -79,6 +83,7 @@ function ProductUpdate() {
     setGalleryStr(car.gallery);
     setCategory(car.category);
     setSupplier(car.supplier);
+    setLoading(false);
   };
   useEffect(() => {
     getSuppliers();

@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 // eslint-disable-next-line import/named
 import { getCarById } from '../../api';
 import styles from './index.module.sass';
@@ -18,9 +18,8 @@ import { OverLayContext } from '../../components/OverLay/provider';
 function ProductDetail() {
   const [currentCar, setCurrentCar] = useState({});
   const [relateCar, setRelateCar] = useState([]);
-  const { search } = useLocation();
   const { setLoading } = useContext(OverLayContext);
-  const id = new URLSearchParams(search).get('id') || '';
+  const { id } = useParams();
   const getCar = async (carId) => {
     setLoading(true);
     const carDetail = await getCarById(carId);

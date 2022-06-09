@@ -59,7 +59,7 @@ export default function AddImageSlide({
         <Grid xs={5} className={styles.imgslideframe}>
           <Box className={styles.imgslidetitle}>Ảnh {num + 1}</Box>
           <Box className={styles.imgslide}>
-            <img src={preview} alt="" />
+            <img src={preview} alt="" className={styles.img} />
             <Box className={styles.hoverimageslide}>
               <label htmlFor={`inputgallery${num}`}>
                 <Button
@@ -94,7 +94,7 @@ export default function AddImageSlide({
         <Grid xs={5} className={styles.imgslideframe}>
           <Box className={styles.imgslidetitle}>Ảnh {num + 1}</Box>
           <Box className={styles.imgslide}>
-            <img src={item} alt="" />
+            <img src={item} alt="" className={styles.img} />
             <Box className={styles.hoverimageslide}>
               <label htmlFor={`inputgallery${num}`}>
                 <Button
