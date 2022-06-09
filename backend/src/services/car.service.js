@@ -1,4 +1,5 @@
 const { Car } = require('../models');
+const ApiError = require('../utils/ApiError');
 
 /**
  * 
@@ -54,6 +55,9 @@ const getCarById = async (id) => {
         relate.pop();
     }
     const car = await Car.findById(id);
+    if(!car) {
+        throw new ApiError(400, "San pham ko ton tai");
+    }
     return { car, relate };
 }
 

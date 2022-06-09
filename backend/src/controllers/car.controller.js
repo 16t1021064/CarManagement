@@ -24,6 +24,7 @@ const getCar = catchAsync(async (req, res) => {
 const getCarById = catchAsync(async (req, res) => {
     const { id } = req.params;
     const carDetail = await carService.getCarById(id);
+    //todo: Chuwa xu ly
     res.status(httpStatus.OK).send(carDetail);
 })
 
@@ -78,8 +79,8 @@ const createCar = catchAsync(async (req, res) => {
 
 const updateCar = catchAsync(async (req, res) => {
     const url = req.protocol + '://' + req.get('host');
-    const {id} = req.params
-    const {name, supplier, category, cost, description, galleryString, gallery, galleryCheck } = req.body;
+    const { id } = req.params
+    const {name, supplier, category, cost, description, galleryString, galleryCheck } = req.body;
     let car = {
         name: name,
         supplier:  supplier,
@@ -95,20 +96,16 @@ const updateCar = catchAsync(async (req, res) => {
     car.gallery=["","","",""];
     for(let i = 0 ; i< 4; i++){
         if (galleryString[i] === '' && galleryCheck[i] === 'exist') {
-            console.log('vao 1');
             car.gallery[i] = url + '/' + req.files?.gallery[place]?.filename;
             place++;
         } else 
           if (galleryString[i] === '' && galleryCheck[i] !== 'exist') {
-            console.log('vao 2');
             car.gallery[i] = '';
         }else
           if(galleryString[i]!=='' && galleryCheck[i] !== 'exist'){
-            console.log(galleryString[i]);
             car.gallery[i] = galleryString[i];
         }
     }
-    console.log(car);
     const carUpdated = await carService.updateCar(id, car);
     res.send(carUpdated).status(httpStatus[204]);
 });
