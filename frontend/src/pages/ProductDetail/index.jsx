@@ -32,6 +32,25 @@ function ProductDetail() {
   useEffect(() => {
     getCar(id);
   }, [id]);
+  const renderThumb = () => {
+    if (currentCar) {
+      return (
+        <div key={currentCar.thumnail} className={styles.slide}>
+          <img src={currentCar.thumnail} alt="" className={styles.slideImg} />
+        </div>
+      );
+    }
+  };
+  const renderGallery = () => {
+    const result = currentCar.gallery?.filter((item) => item !== '');
+    const html = result?.map((item) => (
+      <div key={item} className={styles.slide}>
+        <img src={item} alt={item} className={styles.slideImg} />
+      </div>
+    ));
+    return html;
+  };
+
   return (
     <Grid
       xs={10}
@@ -127,25 +146,14 @@ function ProductDetail() {
                     showStatus={false}
                     showArrows={false}
                     interval={3000}
-                    autoPlay
                     infiniteLoop
-                    centerSlidePercentage={3}
+                    autoPlay
                   >
                     {
-                      currentCar.gallery?.map((item) => {
-                        if (item !== '') {
-                          return (
-                            <div key={item}>
-                              <img
-                                src={item}
-                                alt=""
-                                className={styles.slideImg}
-                              />
-                            </div>
-                          );
-                          return;
-                        }
-                      })
+                      renderThumb()
+                    }
+                    {
+                      renderGallery()
                     }
                   </Carousel>
                 </Box>
