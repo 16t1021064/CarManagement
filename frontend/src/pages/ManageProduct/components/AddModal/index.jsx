@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
 import { React, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
@@ -77,6 +78,8 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
     setAddSuccessStatus(true);
     setResetCar(true);
     reset({});
+    setCategory('');
+    setSupplier('');
     history.push({ search: `${queryString.stringify({})}` });
   };
   return (
@@ -134,8 +137,8 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
               label="--Chọn loại sản phẩm--"
               size="small"
               name="category"
-              error={!!errors.category}
-              helperText={errors.category ? 'Vui lòng chọn loại sản phẩm' : ''}
+              error={!!errors.category && !category}
+              helperText={!category && errors.category ? 'Vui lòng chọn loại sản phẩm' : ''}
               {...register('category', { required: true })}
               onChange={handleChangeCategory}
             >
@@ -160,8 +163,8 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
               value={supplier}
               sx={{ width: '100%' }}
               size="small"
-              error={!!errors.supplier}
-              helperText={errors.supplier ? 'Vui lòng chọn nhà cung cấp' : ''}
+              error={!!errors.supplier && !supplier}
+              helperText={!supplier && errors.supplier ? 'Vui lòng chọn nhà cung cấp' : ''}
               {...register('supplier', { required: true })}
               onChange={handleChangeSupplier}
             >
@@ -185,8 +188,8 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
                 size="small"
                 type="number"
                 error={!!errors.cost}
-                helperText={errors.cost ? 'Vui lòng nhập giá' : ''}
-                {...register('cost', { required: true })}
+                helperText={errors.cost?.type === 'min' ? 'Giá sản phẩm phải lớn hơn 0' : errors.cost?.type === 'required' ? 'Vui lòng nhập giá sản phẩm' : ''}
+                {...register('cost', { required: true, min: 0 })}
               />
             </FormControl>
             <Typography
