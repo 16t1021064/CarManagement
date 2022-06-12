@@ -5,53 +5,36 @@ import queryString from 'query-string';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useHistory, useLocation } from 'react-router-dom';
 import styles from './index.module.sass';
-import { getAllSupplier } from '../../api';
 
-function MenuListSupplier() {
-  const [activeObject, setActiveObject] = useState(null);
-  const [supplierList, setSupplierList] = useState([]);
+function MenuListItem({ incomeList, cate, header }) {
+  const [list, setList] = useState(['Tất cả']);
   const location = useLocation();
   const history = useHistory();
-  const getAll = async () => {
-    try {
-      const list = await getAllSupplier();
-      list.unshift('Tất cả');
-      setSupplierList(list);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const current = new URLSearchParams(location.search).get(cate);
+  const [activeObject, setActiveObject] = useState(current || list[0]);
   useEffect(() => {
-    getAll();
-  }, []);
+    setList([...list, ...incomeList]);
+  }, [incomeList]);
   function toggleActive(item) {
     setActiveObject(item);
     const parsed = queryString.parse(location.search);
-    parsed.supplier = `${item}`;
+    parsed[cate] = `${item}`;
     parsed.pageCurrent = 1;
     history.push({ search: `${queryString.stringify(parsed)}` });
   }
   function toggleActiveStyles(index) {
-    if (supplierList[index] === activeObject) {
+    if (list[index] === activeObject) {
       return `${styles.active}`;
     }
     return '';
   }
-  // useEffect(() => {
-  //   const currentSup = new URLSearchParams(location.search).get('supplier');
-  //   if (currentSup) {
-  //     setActiveObject(currentSup);
-  //   } else {
-  //     setActiveObject(supplierList[0]);
-  //   }
-  // }, [location.search, supplierList]);
   return (
     <MenuList className={styles.menulistitem}>
       <MenuItem>
-        <ListItemText inset>Nhà Cung Cấp</ListItemText>
+        <ListItemText inset>{header}</ListItemText>
         <ArrowDropDownIcon />
       </MenuItem>
-      {supplierList.map((item, index) => (
+      {list.map((item, index) => (
         <MenuItem
           key={item}
           onClick={() => toggleActive(item)}
@@ -64,4 +47,4 @@ function MenuListSupplier() {
   );
 }
 
-export default MenuListSupplier;
+export default MenuListItem;
