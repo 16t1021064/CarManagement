@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -16,7 +17,7 @@ import {
 } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import {
   getAllCategory,
   getAllSupplier,
@@ -42,7 +43,7 @@ function ProductUpdate() {
   const { setLoading } = useContext(OverLayContext);
   const history = useHistory();
   const routerChange = () => {
-    const path = 'quan-ly-sp';
+    const path = '/quan-ly-sp';
     history.push(path);
   };
   const {
@@ -51,7 +52,6 @@ function ProductUpdate() {
     formState: { errors },
     reset,
   } = useForm();
-  const { search } = useLocation();
   const handleChangeCategory = (event) => {
     setCategory(event.target.value);
   };
@@ -70,28 +70,36 @@ function ProductUpdate() {
   // eslint-disable-next-line new-cap
   const { id } = useParams();
   const getCarCurrent = async () => {
-    setLoading(true);
-    const { car } = await getCarById(id);
-    setCarCurrent(car);
-    reset({
-      name: car.name,
-      cost: car.cost,
-      description: car.description,
-      supplier: car.supplier,
-      category: car.category,
-    });
-    setGalleryStr(car.gallery);
-    setCategory(car.category);
-    setSupplier(car.supplier);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const { car } = await getCarById(id);
+      setCarCurrent(car);
+      reset({
+        name: car.name,
+        cost: car.cost,
+        description: car.description,
+        supplier: car.supplier,
+        category: car.category,
+      });
+      setGalleryStr(car.gallery);
+      setCategory(car.category);
+      setSupplier(car.supplier);
+    } catch (error) {
+      history.push('/server-error');
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     getSuppliers();
     getCategories();
   }, []);
   useEffect(() => {
+    if (!id) {
+      history.push('/not-found');
+    }
     getCarCurrent();
-  }, [search]);
+  }, [id]);
   useEffect(() => {
     if (!selectedThumnail) {
       setPreview(undefined);
@@ -129,9 +137,11 @@ function ProductUpdate() {
     for (let i = 0; i < galleryFile.length; i += 1) {
       formData.append('gallery', galleryFile[i]);
     }
-    await updateCar(id, formData);
+    const result = await updateCar(id, formData);
+    if (!result) {
+      history.push('/server-error');
+    }
     setOpenModalUpdateSuccess(true);
-    setOpenModalUpdateSuccess(false);
   };
   const renderThumb = () => {
     if (selectedThumnail) {

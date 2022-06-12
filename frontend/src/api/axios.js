@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable dot-notation */
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
@@ -28,6 +29,10 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (!error.response) {
+      alert('Error');
+      throw error;
+    }
     const statusCode = error.response.status;
     if (statusCode === 404) {
       window.location.href = '/not-found';
@@ -44,6 +49,7 @@ axiosInstance.interceptors.response.use(
     if (statusCode === 500) {
       // show notification
       toast.error('System has an error');
+      window.location.href = '/not-found';
       return;
     }
     if (statusCode === 400) {

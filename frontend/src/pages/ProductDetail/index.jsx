@@ -1,9 +1,11 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-console */
 /* eslint-disable no-unreachable */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -13,20 +15,26 @@ import { getCarById } from '../../api';
 import styles from './index.module.sass';
 import ProductRelatedCard from './ProductRelatedCard';
 import { formatPrice } from '../../helper/FormatPrice';
-import { OverLayContext } from '../../components/OverLay/provider';
+import useLoading from '../../hooks/useLoading';
 
 function ProductDetail() {
   const [currentCar, setCurrentCar] = useState({});
   const [relateCar, setRelateCar] = useState([]);
-  const { setLoading } = useContext(OverLayContext);
+  const [showLoading, hideLoading] = useLoading();
+  console.log(useLoading());
   const { id } = useParams();
   const getCar = async (carId) => {
-    setLoading(true);
-    const carDetail = await getCarById(carId);
-    setLoading(false);
-    const { car, relate } = carDetail;
-    setCurrentCar(car);
-    setRelateCar(relate);
+    try {
+      showLoading();
+      const carDetail = await getCarById(carId);
+      const { car, relate } = carDetail;
+      setCurrentCar(car);
+      setRelateCar(relate);
+    } catch (error) {
+      history.push('/server-error');
+    } finally {
+      hideLoading();
+    }
   };
   useEffect(() => {
     getCar(id);
@@ -73,7 +81,7 @@ function ProductDetail() {
           }}
         >
           <Grid xs={12} className="headerproductdetail">
-            <Link to="danh-sach-sp" style={{ textDecoration: 'none' }}>
+            <Link to="/danh-sach-sp" style={{ textDecoration: 'none' }}>
               <Box
                 sx={{
                   background: '#fff',
@@ -124,7 +132,7 @@ function ProductDetail() {
                 </Grid>
                 <Grid xs={12}>
                   <Typography variant="body1" gutterBottom sx={{ mb: 1 }}>
-                    Giá Sản Phẩm: {formatPrice(parseInt(currentCar.cost, 10))}
+                    Giá Sản Phẩm: { isNaN(formatPrice(parseInt(currentCar.cost, 10))) ? formatPrice(parseInt(currentCar.cost, 10)) : ''}
                   </Typography>
                 </Grid>
                 <Grid xs={12}>

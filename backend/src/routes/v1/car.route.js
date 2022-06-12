@@ -4,9 +4,11 @@ const carValidation = require('../../validations/car.validation')
 const validate = require('../../middlewares/validate');
 const router = express.Router();
 
+
+
 router
     .route('/')
-    .get(validate(carValidation.getCar) ,carController.getCar); 
+    .get(validate(carValidation.getCar) ,carController.getCar);
 
 router
     .route('/')
@@ -23,12 +25,11 @@ router
 router
     .route('/:id')
     .get(validate(carValidation.getCarById), carController.getCarById) 
-    .put(carController.uploadUpdate, carController.updateCar)
-    .delete(carController.deleteCar);
+    .put(carController.uploadUpdate,validate(carValidation.updateCar), carController.updateCar)
+    .delete(validate(carValidation.deleteCar) ,carController.deleteCar);
 
 router
     .route('/testUpload')
     .post(carController.uploadThumnail, carController.testUpload);
-
 
 module.exports = router;

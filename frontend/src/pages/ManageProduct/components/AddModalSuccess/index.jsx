@@ -13,8 +13,8 @@ export default function AddModalSuccess({ openAddSuccess, message }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    if (location.pathname === '/cap-nhat-sp') {
-      history.push('quan-ly-sp');
+    if (location.pathname.includes('/cap-nhat-sp')) {
+      history.push('/quan-ly-sp');
     }
   };
 

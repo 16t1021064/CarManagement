@@ -49,12 +49,13 @@ const paginate = async (pageLimit, pageCurrent, supplier, category, searchValue)
 }
 
 const getCarById = async (id) => {
-    const relateCar = await Car.find({}).limit(4);
+    const car = await Car.findById(id);
+    const { category } = car;
+    const relateCar = await Car.find({}).where('category', category).sort([['createdAt', 'descending']]).limit(4);
     const relate = relateCar.filter((car)=> car.id !== id);
     if(relate.length === 4) {
         relate.pop();
     }
-    const car = await Car.findById(id);
     if(!car) {
         throw new ApiError(400, "San pham ko ton tai");
     }
@@ -63,6 +64,9 @@ const getCarById = async (id) => {
 
 const updateCar = async (id , car) => {
     const carUpdated = await Car.findByIdAndUpdate(id , car);
+    if(!carUpdated) {
+        throw new ApiError(500, 'xe khong ton tai!!!');
+    }
     return carUpdated;
 }
 

@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 /* eslint-disable no-undef */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, Box } from '@mui/material';
 import styles from './index.module.sass';
 // eslint-disable-next-line import/no-cycle
@@ -18,18 +19,24 @@ export default function ProductTable() {
   const [totalCar, setTotalCar] = useState(0);
   const { setLoading } = useContext(OverLayContext);
   const location = useLocation();
+  const history = useHistory();
   const { search } = location;
   const currentPage = new URLSearchParams(search).get('pageCurrent') || 1;
   const searchValue = new URLSearchParams(search).get('searchValue') || '';
   const supplier = new URLSearchParams(search).get('supplier') || '';
   const cate = new URLSearchParams(search).get('cate') || '';
   const getAll = async () => {
-    setLoading(true);
-    const carInfo = await getCar(currentPage, searchValue, supplier, cate);
-    setLoading(false);
-    const { carList, total } = carInfo;
-    setCarListView(carList);
-    setTotalCar(total);
+    try {
+      setLoading(true);
+      const carInfo = await getCar(currentPage, searchValue, supplier, cate);
+      const { carList, total } = carInfo;
+      setCarListView(carList);
+      setTotalCar(total);
+    } catch (error) {
+      history.pushState('/server-error');
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     getAll();

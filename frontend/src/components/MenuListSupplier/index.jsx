@@ -13,9 +13,13 @@ function MenuListSupplier() {
   const location = useLocation();
   const history = useHistory();
   const getAll = async () => {
-    const list = await getAllSupplier();
-    list.unshift('Tất cả');
-    setSupplierList(list);
+    try {
+      const list = await getAllSupplier();
+      list.unshift('Tất cả');
+      setSupplierList(list);
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     getAll();
@@ -33,14 +37,14 @@ function MenuListSupplier() {
     }
     return '';
   }
-  useEffect(() => {
-    const currentSup = new URLSearchParams(location.search).get('supplier');
-    if (currentSup) {
-      setActiveObject(currentSup);
-    } else {
-      setActiveObject(supplierList[0]);
-    }
-  }, [location, supplierList]);
+  // useEffect(() => {
+  //   const currentSup = new URLSearchParams(location.search).get('supplier');
+  //   if (currentSup) {
+  //     setActiveObject(currentSup);
+  //   } else {
+  //     setActiveObject(supplierList[0]);
+  //   }
+  // }, [location.search, supplierList]);
   return (
     <MenuList className={styles.menulistitem}>
       <MenuItem>

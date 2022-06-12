@@ -1,3 +1,5 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/prop-types */
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -17,6 +19,7 @@ import { Container } from './pages/Example/styles';
 // eslint-disable-next-line import/order
 import Grid from '@mui/material/Grid';
 import NotFound from './pages/NotFound';
+import ErrorServer from './pages/ErrorServer';
 
 const routes = [
   {
@@ -33,7 +36,7 @@ const routes = [
     component: ProductDetail,
   },
   {
-    path: '/cap-nhat-sp/:id',
+    path: ['/cap-nhat-sp/:id', '/cap-nhat-sp'],
     component: ProductUpdate,
   },
   {
@@ -43,6 +46,10 @@ const routes = [
   {
     path: '/not-found',
     component: NotFound,
+  },
+  {
+    path: '/server-error',
+    component: ErrorServer,
   },
 ];
 

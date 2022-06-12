@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 /* eslint-disable arrow-body-style */
 import React, { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Box, Grid } from '@mui/material';
 import styles from './index.module.sass';
 import ProductCardManage from '../ProductCardManage';
@@ -14,17 +15,24 @@ export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCa
   const [carListUpdate, setCarListUpdate] = useState([]);
   const [totalCar, setTotalCar] = useState();
   const { search } = useLocation();
+  const history = useHistory();
   const { setLoading } = useContext(OverLayContext);
   const currentPage = new URLSearchParams(search).get('pageCurrent') || 1;
   const searchValue = new URLSearchParams(search).get('searchValue') || '';
   const supplier = new URLSearchParams(search).get('supplier') || '';
   const cate = new URLSearchParams(search).get('cate') || '';
   const getAll = async () => {
-    const carInfo = await getCar(currentPage, searchValue, supplier, cate);
-    const { carList, total } = carInfo;
-    await setTotalCar(total);
-    await setCarListUpdate(carList);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const carInfo = await getCar(currentPage, searchValue, supplier, cate);
+      const { carList, total } = carInfo;
+      await setTotalCar(total);
+      await setCarListUpdate(carList);
+    } catch (error) {
+      history.push('/server-error');
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     getAll();
@@ -40,7 +48,7 @@ export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCa
     }
   }, [resetCar]);
   const renderTable = () => {
-    if (totalCar === 0) {
+    if (totalCar === 0 && !totalCar) {
       return (
         <Grid className={styles.gridtable}>
           <Box className={styles.notfound}>
@@ -53,7 +61,7 @@ export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCa
       <Grid className={styles.gridtable}>
         <Grid xs={12} className={styles.listitem}>
           <ul className={styles.list} style={{ padding: 0 }}>
-            {carListUpdate.map((car) => {
+            {carListUpdate?.map((car) => {
               return (
                 <ProductCardManage car={car} setResetCar={setResetCar} key={car.id} />
               );

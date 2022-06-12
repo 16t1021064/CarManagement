@@ -15,7 +15,7 @@ const createCar = {
         name: Joi.string().required(),
         category: Joi.string().required(),
         supplier: Joi.string().required(),
-        cost: Joi.string().required(),
+        cost: Joi.number().required().min(0),
         description: Joi.string().allow('')
     })
 };
@@ -26,8 +26,33 @@ const getCarById = {
     }),
 };
 
+const updateCar = {
+    params: Joi.object().keys({
+        id: Joi.required(),
+    }),
+    body: Joi.object().keys({
+        name: Joi.string().required(),
+        supplier: Joi.string().required(), 
+        category: Joi.string().required(),
+        cost: Joi.number().required().min(0), 
+        description: Joi.string().allow(''), 
+        thumnail: Joi.string().allow(''),
+        galleryString: Joi.array(),
+        galleryCheck:Joi.array(),
+        gallery:Joi.array(),
+    })
+}
+
+const deleteCar = {
+    params: Joi.object().keys({
+        id: Joi.required(),
+    })
+}
+
 module.exports = {
     getCar,
     createCar,
     getCarById,
+    updateCar,
+    deleteCar,
 }

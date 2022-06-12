@@ -13,9 +13,13 @@ function MenuListCategory() {
   const history = useHistory();
   const location = useLocation();
   const getAll = async () => {
-    const list = await getAllCategory();
-    list.unshift('Tất cả');
-    setCategoryList(list);
+    try {
+      const list = await getAllCategory();
+      list.unshift('Tất cả');
+      setCategoryList(list);
+    } catch (error) {
+      history.push('/server-error');
+    }
   };
   useEffect(() => {
     getAll();
@@ -23,7 +27,8 @@ function MenuListCategory() {
   function toggleActive(item) {
     setActiveObject(item);
     const parsed = queryString.parse(location.search);
-    parsed.cate = `${item}`;
+    const cate = 'abc';
+    parsed[cate] = `${item}`;
     parsed.pageCurrent = 1;
     history.push({ search: `${queryString.stringify(parsed)}` });
   }
@@ -33,14 +38,14 @@ function MenuListCategory() {
     }
     return '';
   }
-  useEffect(() => {
-    const currentCategory = new URLSearchParams(location.search).get('cate');
-    if (currentCategory) {
-      setActiveObject(currentCategory);
-    } else {
-      setActiveObject(categoryList[0]);
-    }
-  }, [location, categoryList]);
+  // useEffect(() => {
+  //   const currentCategory = new URLSearchParams(location.search).get('cate');
+  //   if (currentCategory) {
+  //     setActiveObject(currentCategory);
+  //   } else {
+  //     setActiveObject(categoryList[0]);
+  //   }
+  // }, [location, categoryList]);
   return (
     <MenuList className={styles.menulistitem}>
       <MenuItem>

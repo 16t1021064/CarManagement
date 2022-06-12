@@ -59,7 +59,7 @@ export default function AddImageSlide({
         <Grid xs={5} className={styles.imgslideframe}>
           <Box className={styles.imgslidetitle}>Ảnh {num + 1}</Box>
           <Box className={styles.imgslide}>
-            <img src={preview} alt="" className={styles.img} />
+            <img src={preview} alt="" className={styles.img} accept="image/*" />
             <Box className={styles.hoverimageslide}>
               <label htmlFor={`inputgallery${num}`}>
                 <Button
@@ -76,6 +76,7 @@ export default function AddImageSlide({
                 id={`inputgallery${num}`}
                 style={{ display: 'none' }}
                 onChange={onSelectFile}
+                accept="image/*"
               />
               <Button
                 variant="outlined"
