@@ -33,7 +33,7 @@ export default function ProductTable() {
       setCarListView(carList);
       setTotalCar(total);
     } catch (error) {
-      history.pushState('/server-error');
+      history.push('/server-error');
     } finally {
       setLoading(false);
     }

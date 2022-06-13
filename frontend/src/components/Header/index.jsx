@@ -47,7 +47,7 @@ function Header() {
     <Grid xs={12}>
       <Box>
         <div className={styles.header}>
-          <Grid xs={2}>
+          <Grid xs={4} md={2}>
             <div className={styles.logo}>
               <Link to="/">
                 <svg
@@ -83,10 +83,10 @@ function Header() {
               </Link>
             </div>
           </Grid>
-          <Grid xs={5}>
+          <Grid xs={8} md={10}>
             <ul>
               {list.routes.map((item) => (
-                <Grid xs={6} key={item.to}>
+                <Grid xs={6} md={3} key={item.to}>
                   <li>
                     <Link
                       // eslint-disable-next-line react/jsx-curly-brace-presence

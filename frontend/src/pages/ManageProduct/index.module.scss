@@ -1,0 +1,21 @@
+.manageproduct {
+	 background: #f5f5f5;
+}
+.manageproduct .tableheader {
+	 height: 48px;
+	 margin: 38px 96px;
+	 background: #f5f5f5;
+}
+.manageproduct .producttable {
+	 background: #fff;
+	 margin: 0px 96px;
+	 height: 590px;
+	 border-radius: 20px;
+}
+@media screen and (min-width: 768px) and (max-width: 992px) {
+	.manageproduct .producttable {
+		 height: 870px;
+	}
+}
+
+ 

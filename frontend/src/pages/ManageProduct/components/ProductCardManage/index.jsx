@@ -2,7 +2,6 @@
 import { Button, Grid } from '@mui/material';
 import React, { useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import img from '../../../../image/Mazda.jpeg';
 import ConfirmDeleteModal from '../ConfirmDeleteModal';
 import styles from './index.module.sass';
 
@@ -10,7 +9,7 @@ function ProductCardManage({ car, setResetCar }) {
   const history = useHistory();
   const handleUpdate = useCallback(() => history.push(`/cap-nhat-sp/${car.id}`), [history]);
   return (
-    <Grid xs={4} className={styles.item}>
+    <Grid md={4} xs={6} className={styles.item}>
       <li>
         <div className={styles.borderitem}>
           <Link to={`/chi-tiet-sp/${car.id}`}>

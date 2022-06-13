@@ -30,7 +30,6 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (!error.response) {
-      alert('Error');
       throw error;
     }
     const statusCode = error.response.status;

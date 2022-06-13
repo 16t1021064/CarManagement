@@ -72,6 +72,9 @@ function ProductUpdate() {
   const getCarCurrent = async () => {
     try {
       setLoading(true);
+      if (!id) {
+        history.push('/not-found');
+      }
       const { car } = await getCarById(id);
       setCarCurrent(car);
       reset({
@@ -93,13 +96,9 @@ function ProductUpdate() {
   useEffect(() => {
     getSuppliers();
     getCategories();
-  }, []);
-  useEffect(() => {
-    if (!id) {
-      history.push('/not-found');
-    }
     getCarCurrent();
-  }, [id]);
+  }, []);
+
   useEffect(() => {
     if (!selectedThumnail) {
       setPreview(undefined);
@@ -150,7 +149,7 @@ function ProductUpdate() {
     return <img src={carCurrent.thumnail} alt="" />;
   };
   return (
-    <Grid xs={10} className={styles.productupdate}>
+    <Grid xs={9} md={10} className={styles.productupdate}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box className={styles.productupdatefield}>
           <Grid xs={6} className={styles.productdetailupdate}>

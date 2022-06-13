@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 // eslint-disable-next-line import/named
 import { getCarById } from '../../api';
 import styles from './index.module.sass';
@@ -21,11 +21,14 @@ function ProductDetail() {
   const [currentCar, setCurrentCar] = useState({});
   const [relateCar, setRelateCar] = useState([]);
   const [showLoading, hideLoading] = useLoading();
-  console.log(useLoading());
+  const history = useHistory();
   const { id } = useParams();
   const getCar = async (carId) => {
     try {
       showLoading();
+      if (!id) {
+        history.push('/not-found');
+      }
       const carDetail = await getCarById(carId);
       const { car, relate } = carDetail;
       setCurrentCar(car);
@@ -60,9 +63,15 @@ function ProductDetail() {
 
   return (
     <Grid
-      xs={10}
+      xs={9}
+      md={10}
       className={styles.productdetail}
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        paddingTop: '30px',
+        height: 'auto',
+      }}
     >
       <Box
         sx={{

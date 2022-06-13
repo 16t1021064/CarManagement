@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-cycle */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import queryString from 'query-string';
 import Stack from '@mui/material/Stack';
@@ -9,7 +9,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 function Paginator({ totalCar }) {
   const history = useHistory();
   const location = useLocation();
-  const [currentPage, setCurrentPage] = useState(1);
+  const page = new URLSearchParams(location.search).get('pageCurrent');
+  const [currentPage, setCurrentPage] = useState(page || 1);
   const countPage = Math.ceil(totalCar / 6) || 0;
   const handleChange = (e, value) => {
     setCurrentPage(value);
@@ -17,14 +18,8 @@ function Paginator({ totalCar }) {
     parsed.pageCurrent = `${value}`;
     history.push({ search: `${queryString.stringify(parsed)}` });
   };
-  const page = new URLSearchParams(location.search).get('pageCurrent');
-  useEffect(() => {
-    if (page) {
-      setCurrentPage(parseInt(page, 10));
-    }
-  }, [page]);
   return (
-    <Stack>
+    <Stack sx={{ mb: 2 }}>
       <Pagination
         count={countPage}
         variant="outlined"

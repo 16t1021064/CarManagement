@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
-import { ListItemText, MenuItem, MenuList } from '@mui/material';
+import { ListItemText, MenuList } from '@mui/material';
 import queryString from 'query-string';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -30,18 +32,18 @@ function MenuListItem({ incomeList, cate, header }) {
   }
   return (
     <MenuList className={styles.menulistitem}>
-      <MenuItem>
+      <span className={styles.menuitem}>
         <ListItemText inset>{header}</ListItemText>
         <ArrowDropDownIcon />
-      </MenuItem>
+      </span>
       {list.map((item, index) => (
-        <MenuItem
+        <span
           key={item}
           onClick={() => toggleActive(item)}
-          className={toggleActiveStyles(index)}
+          className={`${styles.menuitem} ${toggleActiveStyles(index)}`}
         >
           <ListItemText inset>{item}</ListItemText>
-        </MenuItem>
+        </span>
       ))}
     </MenuList>
   );

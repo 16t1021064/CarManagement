@@ -223,7 +223,7 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
             >
               Thêm ảnh minh hoạ<span style={{ color: 'red' }}>*</span>
             </Typography>
-            <input type="file" id="inputfile" className={styles.inputfile} {...register('thumnail', { required: true })} />
+            <input type="file" id="inputfile" className={styles.inputfile} {...register('thumnail', { required: true })} accept="image/*" />
             <br />
             {errors.thumnail && <span className={styles.errormessage}>Vui lòng thêm ảnh</span>}
             <Grid sx={12} className={styles.buttonside}>

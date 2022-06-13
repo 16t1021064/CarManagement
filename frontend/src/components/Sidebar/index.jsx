@@ -29,16 +29,16 @@ function SideBar() {
       history.push('/server-error');
     }
   };
-  useEffect(() => {
-    getSupplierList();
-    getCategoryList();
-  }, []);
   const renderSidebar = () => {
+    useEffect(() => {
+      getSupplierList();
+      getCategoryList();
+    }, []);
     if (location.pathname.includes('/not-found') || location.pathname.includes('/server-error')) {
       return <></>;
     }
     return (
-      <Grid xs={2} className={styles.sidebar} item>
+      <Grid xs={3} md={2} className={styles.sidebar} item>
         <MenuListItem incomeList={categories} cate="cate" header="Danh Mục" />
         <Divider />
         <MenuListItem incomeList={suppliers} cate="supplier" header="Nhà Cung Cấp" />

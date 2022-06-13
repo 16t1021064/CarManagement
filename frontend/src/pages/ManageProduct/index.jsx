@@ -2,7 +2,7 @@ import { Grid } from '@mui/material';
 import React, { useState } from 'react';
 import SearchBox from '../../components/SearchBox';
 import ProductTable from './components/ProductTable';
-import styles from './index.module.sass';
+import styles from './index.module.scss';
 import AddModal from './components/AddModal';
 import AddModalSuccess from './components/AddModalSuccess';
 
@@ -10,7 +10,7 @@ function ManageProduct() {
   const [addSuccessStatus, setAddSuccessStatus] = useState(false);
   const [resetCar, setResetCar] = useState(false);
   return (
-    <Grid xs={10} className={styles.manageproduct}>
+    <Grid xs={9} md={10} className={styles.manageproduct}>
       <Grid className={styles.tableheader} xs={12}>
         <AddModal
           setAddSuccessStatus={setAddSuccessStatus}

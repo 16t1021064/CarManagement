@@ -3,11 +3,11 @@ import React from 'react';
 import SearchBox from '../../components/SearchBox';
 // eslint-disable-next-line import/no-cycle
 import ProductTable from './components/ProductTable';
-import styles from './index.module.sass';
+import styles from './index.module.scss';
 
 function ProductListView() {
   return (
-    <Grid xs={10} className={styles.manageproduct}>
+    <Grid xs={8} md={10} className={styles.manageproduct}>
       <Grid xs={12} className={styles.tableheader}>
         <SearchBox />
       </Grid>
