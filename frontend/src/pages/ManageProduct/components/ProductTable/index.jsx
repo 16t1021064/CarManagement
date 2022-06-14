@@ -34,9 +34,9 @@ export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCa
       setLoading(false);
     }
   };
-  useEffect(() => {
-    getAll();
-  }, []);
+  // useEffect(() => {
+  //   getAll();
+  // }, []);
   useEffect(() => {
     getAll();
   }, [search]);

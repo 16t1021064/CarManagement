@@ -140,7 +140,6 @@ function ProductUpdate() {
     if (!result) {
       history.push('/server-error');
     }
-    setOpenModalUpdateSuccess(true);
   };
   const renderThumb = () => {
     if (selectedThumnail) {
@@ -339,7 +338,7 @@ function ProductUpdate() {
             </Grid>
           </Grid>
         </Box>
-        <AddModalSuccess openAddSuccess={openModalUpdateSuccess} message="Cập nhật sản phẩm thành công !!!" />
+        {openModalUpdateSuccess && <AddModalSuccess setOpenModalUpdateSuccess={setOpenModalUpdateSuccess} message="Cập nhật sản phẩm thành công !!!" />}
       </form>
     </Grid>
   );

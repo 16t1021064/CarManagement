@@ -1,28 +1,17 @@
 /* eslint-disable react/prop-types */
 import { Modal, Box, Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { useHistory, useLocation } from 'react-router-dom';
 import styles from './index.module.sass';
 import img from '../../../../image/Shape.jpg';
 
-export default function AddModalSuccess({ openAddSuccess, message }) {
+export default function AddModalSuccess({ setOpenModalUpdateSuccess, message }) {
   const [open, setOpen] = useState(false);
-  const location = useLocation();
-  const history = useHistory();
-  const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    if (location.pathname.includes('/cap-nhat-sp')) {
-      history.push('/quan-ly-sp');
-    }
+    setOpenModalUpdateSuccess(false);
   };
 
-  useEffect(() => {
-    if (openAddSuccess) {
-      handleOpen();
-    }
-  }, [openAddSuccess]);
   const style = {
     position: 'absolute',
     top: '50%',

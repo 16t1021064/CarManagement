@@ -4,7 +4,7 @@ import img from '../../image/404.png';
 
 export default function NotFound() {
   return (
-    <Grid xs={10}>
+    <Grid xs={12}>
       <div style={{ textAlign: 'center' }}>
         <img src={img} alt="" />
       </div>

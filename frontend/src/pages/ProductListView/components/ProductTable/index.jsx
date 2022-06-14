@@ -47,7 +47,7 @@ export default function ProductTable() {
   const renderTable = () => {
     if (totalCar === 0) {
       return (
-        <Grid className={styles.gridtable}>
+        <Grid xs={12} className={styles.gridtable}>
           <Box className={styles.notfound}>
             <img alt="" src={image} className={styles.img} />
           </Box>
