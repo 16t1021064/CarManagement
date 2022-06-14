@@ -15,6 +15,12 @@ const getAllSupplier = catchAsync(async (req, res) => {
     res.status(httpStatus.OK).send(suppliers);
 })
 
+const getRelate = catchAsync(async (req, res) => {
+    const { cate } = req.params;
+    const { categories , suppliers } = await carService.getAllRelate(cate);
+
+    res.status(httpStatus.OK).send({categories , suppliers});
+})
 const getCar = catchAsync(async (req, res) => {
     const { pageLimit, pageCurrent, supplier, category, searchValue } = req.query;
     const { carList, total } = await carService.paginate(pageLimit, pageCurrent, supplier, category, searchValue);
@@ -125,4 +131,5 @@ module.exports = {
     uploadUpdate,
     updateCar,
     deleteCar,
+    getRelate,
 }

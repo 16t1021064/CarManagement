@@ -7,7 +7,7 @@ import styles from './index.module.sass';
 
 function ProductRelatedCard({ car }) {
   return (
-    <Grid xs={4} className={styles.item}>
+    <Grid xs={6} md={4} className={styles.item}>
       <li>
         <div className={styles.borderitem}>
           <Link to={`/chi-tiet-sp/${car?.id}`}>

@@ -179,7 +179,7 @@ function ProductDetail() {
           <Grid xs={12} className={styles.suggetion}>
             Gợi Ý Cho Bạn:
           </Grid>
-          <Grid xs={12}>
+          <Grid xs={12} md={12}>
             <ul style={{ listStyle: 'none', display: 'flex', padding: '0px' }}>
               {
                 relateCar?.map((car) => <ProductRelatedCard car={car} key={car.id} />)

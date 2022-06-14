@@ -8,18 +8,27 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useHistory, useLocation } from 'react-router-dom';
 import styles from './index.module.sass';
 
-function MenuListItem({ incomeList, cate, header }) {
+function MenuListItem({
+  incomeList,
+  cate,
+  header,
+  setCurrentCate,
+}) {
   const [list, setList] = useState(['Tất cả']);
   const location = useLocation();
   const history = useHistory();
   const current = new URLSearchParams(location.search).get(cate);
   const [activeObject, setActiveObject] = useState(current || list[0]);
   useEffect(() => {
-    setList([...list, ...incomeList]);
+    const tmp = ['Tất cả'];
+    setList([...tmp, ...incomeList]);
   }, [incomeList]);
   function toggleActive(item) {
     setActiveObject(item);
     const parsed = queryString.parse(location.search);
+    if (cate === 'cate') {
+      setCurrentCate(item);
+    }
     parsed[cate] = `${item}`;
     parsed.pageCurrent = 1;
     history.push({ search: `${queryString.stringify(parsed)}` });

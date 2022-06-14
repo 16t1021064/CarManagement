@@ -23,6 +23,10 @@ router
     .get(carController.getAllSupplier);
 
 router
+    .route('/relate/:cate')
+    .get(carController.getRelate);
+
+router
     .route('/:id')
     .get(validate(carValidation.getCarById), carController.getCarById) 
     .put(carController.uploadUpdate,validate(carValidation.updateCar), carController.updateCar)

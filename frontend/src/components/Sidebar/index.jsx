@@ -3,45 +3,44 @@
 import { Divider, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { getAllCategory, getAllSupplier } from '../../api';
+import { getRelate } from '../../api';
 // // eslint-disable-next-line import/no-cycle
 import MenuListItem from '../MenuListItem';
 import styles from './index.module.sass';
 
 function SideBar() {
-  const [suppliers, setSuppliers] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [list, setList] = useState({
+    categories: [],
+    suppliers: [],
+  });
+  const [currentCate, setCurrentCate] = useState('');
   const location = useLocation();
   const history = useHistory();
-  const getSupplierList = async () => {
+  const getList = async (category) => {
     try {
-      const supplierList = await getAllSupplier();
-      setSuppliers(supplierList);
-    } catch (error) {
-      history.push('/server-error');
-    }
-  };
-  const getCategoryList = async () => {
-    try {
-      const categoryList = await getAllCategory();
-      setCategories(categoryList);
+      let result;
+      if (category === 'Tất cả' || category === '') {
+        result = await getRelate('*');
+      } else {
+        result = await getRelate(category);
+      }
+      setList(result);
     } catch (error) {
       history.push('/server-error');
     }
   };
   const renderSidebar = () => {
     useEffect(() => {
-      getSupplierList();
-      getCategoryList();
-    }, []);
+      getList(currentCate);
+    }, [currentCate]);
     if (location.pathname.includes('/not-found') || location.pathname.includes('/server-error')) {
       return <></>;
     }
     return (
       <Grid xs={3} md={2} className={styles.sidebar} item>
-        <MenuListItem incomeList={categories} cate="cate" header="Danh Mục" />
+        <MenuListItem incomeList={list.categories} cate="cate" header="Danh Mục" setCurrentCate={setCurrentCate} />
         <Divider />
-        <MenuListItem incomeList={suppliers} cate="supplier" header="Nhà Cung Cấp" />
+        <MenuListItem incomeList={list.suppliers} cate="supplier" header="Nhà Cung Cấp" />
       </Grid>
     );
   };

@@ -52,3 +52,8 @@ export const updateCar = async (id, data) => {
   const result = await axiosInstance.put(`${API_URL}/${id}`, data);
   return result;
 };
+
+export const getRelate = async (category) => {
+  const result = await axiosInstance.get(`${API_URL}/relate/${category}`);
+  return result;
+};
