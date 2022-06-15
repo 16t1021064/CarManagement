@@ -1,7 +1,6 @@
 import { Grid } from '@mui/material';
 import React from 'react';
 import SearchBox from '../../components/SearchBox';
-// eslint-disable-next-line import/no-cycle
 import ProductTable from './components/ProductTable';
 import styles from './index.module.scss';
 

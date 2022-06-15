@@ -1,6 +1,12 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable consistent-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/prop-types */
-import { React, useEffect, useState } from 'react';
+import {
+  React,
+  useEffect,
+  useState,
+} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -18,27 +24,63 @@ import Modal from '@mui/material/Modal';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useForm } from 'react-hook-form';
 import styles from './index.module.sass';
-import { createCar, getAllCategory, getAllSupplier } from '../../../../api';
+import { createCar, getRelate } from '../../../../api';
 
 export default function AddModal({ setAddSuccessStatus, setResetCar }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue,
+    getValues,
+    clearErrors,
+    setError,
+  } = useForm();
   const [open, setOpen] = useState(false);
-  const [category, setCategory] = useState('');
-  const [supplier, setSupplier] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
-  const history = useHistory();
-  const initialCate = async () => {
-    const cate = await getAllCategory();
-    setCategories(cate);
+  const [list, setList] = useState({
+    categories: [],
+    suppliers: [],
+  });
+  const [currentCate, setCurrentCate] = useState('');
+  const [selectedThumnail, setSelectedThumnail] = useState();
+  const [preview, setPreview] = useState();
+  useEffect(() => {
+    if (!selectedThumnail) {
+      setPreview(undefined);
+      return;
+    }
+    if (!selectedThumnail.name.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
+      setError('thumnail', { type: 'custom', message: 'Vui lòng chọn đúng định dạng' });
+    }
+    const objectUrl = URL.createObjectURL(selectedThumnail);
+    setPreview(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedThumnail]);
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedThumnail(undefined);
+      return;
+    }
+    setSelectedThumnail(e.target.files[0]);
   };
-  const initialSup = async () => {
-    const sup = await getAllSupplier();
-    setSuppliers(sup);
+  const history = useHistory();
+  const getList = async (category) => {
+    try {
+      let result;
+      if (category === 'Tất cả' || category === '') {
+        result = await getRelate('*');
+      } else {
+        result = await getRelate(category);
+      }
+      setList(result);
+    } catch (error) {
+      history.push('/server-error');
+    }
   };
   useEffect(() => {
-    initialCate();
-    initialSup();
-  }, []);
+    getList(currentCate);
+  }, [currentCate]);
   const style = {
     position: 'absolute',
     top: '50%',
@@ -51,18 +93,29 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
     p: 4,
     borderRadius: '20px',
   };
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
+
+  const previewThumb = () => {
+    if (selectedThumnail) {
+      return (
+        <div style={{ width: '200px', height: '130px' }}>
+          <img src={preview} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+        </div>
+      );
+    }
+    return <></>;
+  };
+
   const handleChangeCategory = (event) => {
-    setCategory(event.target.value);
+    setValue('category', event.target.value);
+    clearErrors('category');
+    setCurrentCate(event.target.value);
   };
+
   const handleChangeSupplier = (event) => {
-    setSupplier(event.target.value);
+    setValue('supplier', event.target.value);
+    clearErrors('supplier');
   };
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const onSubmit = async (data) => {
@@ -78,10 +131,23 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
     setAddSuccessStatus(true);
     setResetCar(true);
     reset({});
-    setCategory('');
-    setSupplier('');
+    setValue('category', '');
+    setValue('supplier', '');
     history.push({ search: `${queryString.stringify({})}` });
   };
+
+  const helperTextName = () => {
+    if (errors.name?.type === 'required') {
+      return 'Vui lòng nhập tên sản phẩm';
+    }
+    if (errors.name?.type === 'minLength') {
+      return 'Độ dài tên sản phẩm phải lớn hơn 3 ký tự';
+    }
+    if (errors.name?.type === 'maxLength') {
+      return 'Độ dài tên sản phẩm không được lớn hơn 30 ký tự';
+    }
+  };
+
   return (
     <>
       <Button onClick={handleOpen} className={styles.addmodalbutton}>
@@ -116,8 +182,8 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
                 size="small"
                 name="name"
                 error={!!errors.name}
-                helperText={errors.name ? 'Vui lòng nhập tên sản phẩm' : ''}
-                {...register('name', { required: true })}
+                helperText={helperTextName()}
+                {...register('name', { required: true, maxLength: 30, minLength: 3 })}
                 onBlurCapture={(e) => { e.target.value = e.target.value.trim(); }}
               />
             </FormControl>
@@ -132,17 +198,17 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
             <TextField
               id="outlined-select-currency"
               select
-              value={category}
+              value={getValues('category')}
               sx={{ width: '100%' }}
               label="--Chọn loại sản phẩm--"
               size="small"
               name="category"
-              error={!!errors.category && !category}
-              helperText={!category && errors.category ? 'Vui lòng chọn loại sản phẩm' : ''}
+              helperText={!getValues('category') && errors.category ? 'Vui lòng chọn loại sản phẩm' : ''}
               {...register('category', { required: true })}
+              error={!!errors.category && !getValues('category')}
               onChange={handleChangeCategory}
             >
-              {categories?.map((option) => (
+              {list.categories?.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
@@ -160,15 +226,16 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
               id="outlined-select-currency"
               select
               label="--Chọn loại sản phẩm--"
-              value={supplier}
+              value={getValues('supplier')}
               sx={{ width: '100%' }}
               size="small"
-              error={!!errors.supplier && !supplier}
-              helperText={!supplier && errors.supplier ? 'Vui lòng chọn nhà cung cấp' : ''}
+              error={!!errors.supplier && !getValues('supplier')}
+              helperText={!getValues('supplier') && errors.supplier ? 'Vui lòng chọn nhà cung cấp' : ''}
               {...register('supplier', { required: true })}
               onChange={handleChangeSupplier}
+              disabled={!getValues('category')}
             >
-              {suppliers?.map((option) => (
+              {list.suppliers?.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
@@ -223,9 +290,15 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
             >
               Thêm ảnh minh hoạ<span style={{ color: 'red' }}>*</span>
             </Typography>
-            <input type="file" id="inputfile" className={styles.inputfile} {...register('thumnail', { required: true })} accept="image/*" />
+            <input type="file" id="inputfile" className={styles.inputfile} {...register('thumnail', { required: 'Vui lòng chọn ảnh đại diện', pattern: '/\.(jpg|jpeg|png|gif)$/)' })} accept="image/*" onChange={onSelectFile} />
+            {
+              previewThumb()
+            }
             <br />
-            {errors.thumnail && <span className={styles.errormessage}>Vui lòng thêm ảnh</span>}
+            {
+             !!errors.thumnail
+             && <span className={styles.errormessage}>{errors.thumnail?.message}</span>
+            }
             <Grid sx={12} className={styles.buttonside}>
               <Button
                 variant="outlined"

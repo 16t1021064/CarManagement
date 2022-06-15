@@ -4,15 +4,12 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { createContext } from 'react';
-// eslint-disable-next-line import/no-cycle
 import ManageProduct from './pages/ManageProduct';
-// eslint-disable-next-line import/no-cycle
 import ProductListView from './pages/ProductListView';
 import ProductDetail from './pages/ProductDetail';
 import ProductUpdate from './pages/ProductUpdate';
 import ExamplePage from './pages/Example';
 import Header from './components/Header';
-// eslint-disable-next-line import/no-cycle
 import SideBar from './components/Sidebar';
 import OverLayProvider from './components/OverLay/provider';
 import { Container } from './pages/Example/styles';

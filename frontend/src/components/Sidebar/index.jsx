@@ -4,7 +4,6 @@ import { Divider, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getRelate } from '../../api';
-// // eslint-disable-next-line import/no-cycle
 import MenuListItem from '../MenuListItem';
 import styles from './index.module.sass';
 

@@ -6,8 +6,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, Box } from '@mui/material';
 import styles from './index.module.sass';
-// eslint-disable-next-line import/no-cycle
-// eslint-disable-next-line import/no-cycle
 import Paginator from '../../../../components/Paginator';
 import ProductCard from '../ProductCardView';
 import { getCar } from '../../../../api';

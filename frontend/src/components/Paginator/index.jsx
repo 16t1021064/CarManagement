@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable import/no-cycle */
 import React, { useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import queryString from 'query-string';
