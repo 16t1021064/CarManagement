@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 import './App.css';
@@ -12,11 +13,14 @@ import ExamplePage from './pages/Example';
 import Header from './components/Header';
 import SideBar from './components/Sidebar';
 import OverLayProvider from './components/OverLay/provider';
+import ModalSuccessProvider from './components/ModalSuccessProvider';
 import { Container } from './pages/Example/styles';
 // eslint-disable-next-line import/order
 import Grid from '@mui/material/Grid';
+// eslint-disable-next-line import/no-unresolved
 import NotFound from './pages/NotFound';
 import ErrorServer from './pages/ErrorServer';
+import 'react-toastify/dist/ReactToastify.css';
 
 const routes = [
   {
@@ -59,16 +63,18 @@ function App() {
     <Container>
       <Grid container>
         <OverLayProvider>
-          <Router>
-            <Header />
-            <SideBar />
-            <Switch>
-              {routes.map((route) => (
-                <Route key={route.path} {...route} />
-              ))}
-            </Switch>
-          </Router>
-          <ToastContainer />
+          <ModalSuccessProvider>
+            <Router>
+              <Header />
+              <SideBar />
+              <Switch>
+                {routes.map((route) => (
+                  <Route key={route.path} {...route} />
+                ))}
+              </Switch>
+            </Router>
+            <ToastContainer />
+          </ModalSuccessProvider>
         </OverLayProvider>
       </Grid>
     </Container>

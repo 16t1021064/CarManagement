@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable import/no-unresolved */
 /* eslint-disable no-useless-escape */
 /* eslint-disable consistent-return */
 /* eslint-disable no-nested-ternary */
@@ -19,14 +21,40 @@ import {
   TextField,
 } from '@mui/material';
 import { useHistory } from 'react-router-dom';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 import Modal from '@mui/material/Modal';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useForm } from 'react-hook-form';
 import styles from './index.module.sass';
 import { createCar, getRelate } from '../../../../api';
+import useModal from '../../../../hooks/useModal';
 
-export default function AddModal({ setAddSuccessStatus, setResetCar }) {
+const schema = yup.object().shape({
+  thumnail: yup
+    .mixed()
+    .test('required', 'Vui lòng chọn ảnh đại diện', (value) => value && value.length)
+    .test('type', 'Vui lòng nhập file đúng định dạng JPEG, JPG, PNG', (value) => value && value[0] && (value[0].type === 'image/jpeg' || value[0].type === 'image/jpg' || value[0].type === 'image/png')),
+  name: yup
+    .string()
+    .required('Vui lòng nhập tên')
+    .test('minLength', 'Tên xe lớn hơn 3 ký tự', (val) => val.length > 3)
+    .test('maxLength', 'Tên xe bé hơn 20 ký tự', (val) => val.length < 20),
+  category: yup
+    .string()
+    .required('Vui lòng chọn loại xe'),
+  supplier: yup
+    .string()
+    .required('Vui lòng chọn nhà cung cấp'),
+  cost: yup
+    .number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .required('Vui lòng nhập giá')
+    .test('min', 'Giá phải lớn hơn 0', (val) => val > 0),
+});
+
+export default function AddModal({ setResetCar }) {
   const {
     register,
     handleSubmit,
@@ -35,8 +63,9 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
     setValue,
     getValues,
     clearErrors,
-    setError,
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const [open, setOpen] = useState(false);
   const [list, setList] = useState({
     categories: [],
@@ -45,18 +74,18 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
   const [currentCate, setCurrentCate] = useState('');
   const [selectedThumnail, setSelectedThumnail] = useState();
   const [preview, setPreview] = useState();
+  const [showModal] = useModal();
   useEffect(() => {
     if (!selectedThumnail) {
       setPreview(undefined);
       return;
     }
-    if (!selectedThumnail.name.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
-      setError('thumnail', { type: 'custom', message: 'Vui lòng chọn đúng định dạng' });
-    }
+
     const objectUrl = URL.createObjectURL(selectedThumnail);
     setPreview(objectUrl);
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedThumnail]);
+
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedThumnail(undefined);
@@ -126,25 +155,20 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
     formData.append('cost', data.cost);
     formData.append('description', data.description);
     formData.append('thumnail', data.thumnail[0]);
-    await createCar(formData);
-    handleClose(true);
-    setAddSuccessStatus(true);
-    setResetCar(true);
-    reset({});
-    setValue('category', '');
-    setValue('supplier', '');
-    history.push({ search: `${queryString.stringify({})}` });
-  };
-
-  const helperTextName = () => {
-    if (errors.name?.type === 'required') {
-      return 'Vui lòng nhập tên sản phẩm';
-    }
-    if (errors.name?.type === 'minLength') {
-      return 'Độ dài tên sản phẩm phải lớn hơn 3 ký tự';
-    }
-    if (errors.name?.type === 'maxLength') {
-      return 'Độ dài tên sản phẩm không được lớn hơn 30 ký tự';
+    try {
+      const result = await createCar(formData);
+      if (result) {
+        handleClose(true);
+        showModal('Thêm sản phẩm thành công');
+        setResetCar(true);
+        reset({});
+        setValue('category', '');
+        setValue('supplier', '');
+        setPreview(undefined);
+        setSelectedThumnail(null);
+      }
+    } catch (error) {
+      history.push('/server-error');
     }
   };
 
@@ -182,7 +206,7 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
                 size="small"
                 name="name"
                 error={!!errors.name}
-                helperText={helperTextName()}
+                helperText={errors.name?.message}
                 {...register('name', { required: true, maxLength: 30, minLength: 3 })}
                 onBlurCapture={(e) => { e.target.value = e.target.value.trim(); }}
               />
@@ -203,7 +227,7 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
               label="--Chọn loại sản phẩm--"
               size="small"
               name="category"
-              helperText={!getValues('category') && errors.category ? 'Vui lòng chọn loại sản phẩm' : ''}
+              helperText={errors.category?.message}
               {...register('category', { required: true })}
               error={!!errors.category && !getValues('category')}
               onChange={handleChangeCategory}
@@ -230,7 +254,7 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
               sx={{ width: '100%' }}
               size="small"
               error={!!errors.supplier && !getValues('supplier')}
-              helperText={!getValues('supplier') && errors.supplier ? 'Vui lòng chọn nhà cung cấp' : ''}
+              helperText={errors.supplier?.message}
               {...register('supplier', { required: true })}
               onChange={handleChangeSupplier}
               disabled={!getValues('category')}
@@ -255,7 +279,7 @@ export default function AddModal({ setAddSuccessStatus, setResetCar }) {
                 size="small"
                 type="number"
                 error={!!errors.cost}
-                helperText={errors.cost?.type === 'min' ? 'Giá sản phẩm phải lớn hơn 0' : errors.cost?.type === 'required' ? 'Vui lòng nhập giá sản phẩm' : ''}
+                helperText={errors.cost?.message}
                 {...register('cost', { required: true, min: 0 })}
               />
             </FormControl>

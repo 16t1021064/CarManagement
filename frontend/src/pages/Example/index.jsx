@@ -8,22 +8,18 @@ import useLoading from '../../hooks/useLoading';
 
 export default function ExamplePage() {
   const [posts, setPosts] = useState([]);
-  // const { setLoading } =  useContext(OverLayContext);
 
   const [showLoading, hideLoading] = useLoading();
 
   const getData = async () => {
     try {
-      // setLoading(true);
       showLoading();
       const data = await axiosInstance.get('/example');
       if (data) {
         setPosts(data);
       }
-      // setLoading(false);
       hideLoading();
     } catch (e) {
-      // setLoading(false);
       showLoading();
     }
   };
