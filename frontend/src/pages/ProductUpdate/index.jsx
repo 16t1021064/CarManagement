@@ -15,7 +15,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 import {
@@ -24,10 +24,11 @@ import {
   getCarById,
   updateCar,
 } from '../../api';
-import { OverLayContext } from '../../components/OverLay/provider';
 import AddModalSuccess from '../ManageProduct/components/AddModalSuccess';
 import AddImageSlide from './AddImageSlide';
 import styles from './index.module.sass';
+import useLoading from '../../hooks/useLoading';
+import useModal from '../../hooks/useModal';
 
 function ProductUpdate() {
   const [category, setCategory] = useState('');
@@ -40,7 +41,8 @@ function ProductUpdate() {
   const [galleryStr, setGalleryStr] = useState([]);
   const [galleryFile, setGalleryFile] = useState([undefined, undefined, undefined, undefined]);
   const [openModalUpdateSuccess, setOpenModalUpdateSuccess] = useState(false);
-  const { setLoading } = useContext(OverLayContext);
+  const [showLoading, hideLoading] = useLoading();
+  const [showModal] = useModal();
   const history = useHistory();
   const routerChange = () => {
     const path = '/quan-ly-sp';
@@ -71,7 +73,7 @@ function ProductUpdate() {
   const { id } = useParams();
   const getCarCurrent = async () => {
     try {
-      setLoading(true);
+      showLoading();
       if (!id) {
         history.push('/not-found');
       }
@@ -90,7 +92,7 @@ function ProductUpdate() {
     } catch (error) {
       history.push('/server-error');
     } finally {
-      setLoading(false);
+      hideLoading();
     }
   };
   useEffect(() => {
@@ -137,6 +139,9 @@ function ProductUpdate() {
       formData.append('gallery', galleryFile[i]);
     }
     const result = await updateCar(id, formData);
+    if (result) {
+      showModal('Cập nhật sản phẩm thành công!');
+    }
     if (!result) {
       history.push('/server-error');
     }

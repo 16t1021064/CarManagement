@@ -4,18 +4,19 @@ import {
   Grid,
   Modal,
 } from '@mui/material';
+import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import styles from './index.module.sass';
 import { deleteCar } from '../../../../api';
-import AddModalSuccess from '../AddModalSuccess';
+import useModal from '../../../../hooks/useModal';
 
 // eslint-disable-next-line react/prop-types
 export default function ConfirmDeleteModal({ carName, carId, setResetCar }) {
   const [open, setOpen] = useState(false);
-  const [modalStatus, setModalStatus] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleOpenModal = (status) => setModalStatus(status);
+  const history = useHistory();
+  const [openModal] = useModal();
   const style = {
     position: 'absolute',
     top: '50%',
@@ -29,10 +30,16 @@ export default function ConfirmDeleteModal({ carName, carId, setResetCar }) {
     borderRadius: '20px',
   };
   const deleteCarById = async (id) => {
-    await deleteCar(id);
-    handleClose();
-    setResetCar(true);
-    handleOpenModal(true);
+    try {
+      const result = await deleteCar(id);
+      if (result) {
+        handleClose();
+        setResetCar(true);
+        openModal('Xoá sản phẩm thành công!!');
+      }
+    } catch (error) {
+      history.pushState('/server-error');
+    }
   };
   return (
     <>
@@ -49,7 +56,6 @@ export default function ConfirmDeleteModal({ carName, carId, setResetCar }) {
       >
         Xoá
       </Button>
-      <AddModalSuccess openAddSuccess={modalStatus} message="Xoá sản phẩm thành công!" />
       <Modal
         open={open}
         onClose={handleClose}
