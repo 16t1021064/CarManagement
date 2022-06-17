@@ -14,6 +14,12 @@ import { OverLayContext } from '../../../../components/OverLay/provider';
 export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCar }) {
   const [carListUpdate, setCarListUpdate] = useState([]);
   const [totalCar, setTotalCar] = useState();
+  // const [searchInfo, setSearchInfo] = useState({
+  //   currentPage: 1,
+  //   searchValue: '',
+  //   supplier: '',
+  //   cate: '',
+  // });
   const { search } = useLocation();
   const history = useHistory();
   const { setLoading } = useContext(OverLayContext);
@@ -26,17 +32,14 @@ export default function ProductTable({ resetCar, setAddSuccessStatus, setResetCa
       setLoading(true);
       const carInfo = await getCar(currentPage, searchValue, supplier, cate);
       const { carList, total } = carInfo;
-      await setTotalCar(total);
-      await setCarListUpdate(carList);
+      setTotalCar(total);
+      setCarListUpdate(carList);
     } catch (error) {
       history.push('/server-error');
     } finally {
       setLoading(false);
     }
   };
-  // useEffect(() => {
-  //   getAll();
-  // }, []);
   useEffect(() => {
     getAll();
   }, [search]);

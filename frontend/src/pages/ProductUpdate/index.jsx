@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable no-nested-ternary */
@@ -18,6 +19,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   getAllCategory,
   getAllSupplier,
@@ -29,6 +32,25 @@ import AddImageSlide from './AddImageSlide';
 import styles from './index.module.sass';
 import useLoading from '../../hooks/useLoading';
 import useModal from '../../hooks/useModal';
+
+const schema = yup.object().shape({
+  name: yup
+    .string()
+    .required('Vui lòng nhập tên')
+    .test('minLength', 'Tên xe lớn hơn 3 ký tự', (val) => val.length > 3)
+    .test('maxLength', 'Tên xe bé hơn 20 ký tự', (val) => val.length < 20),
+  category: yup
+    .string()
+    .required('Vui lòng chọn loại xe'),
+  supplier: yup
+    .string()
+    .required('Vui lòng chọn nhà cung cấp'),
+  cost: yup
+    .number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .required('Vui lòng nhập giá')
+    .test('min', 'Giá phải lớn hơn 0', (val) => val > 0),
+});
 
 function ProductUpdate() {
   const [category, setCategory] = useState('');
@@ -53,7 +75,10 @@ function ProductUpdate() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+    setError,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const handleChangeCategory = (event) => {
     setCategory(event.target.value);
   };
@@ -105,6 +130,9 @@ function ProductUpdate() {
     if (!selectedThumnail) {
       setPreview(undefined);
       return;
+    }
+    if (!selectedThumnail.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+      setError('thumnail', { type: 'custom', message: 'Vui lòng chọn file hợp lệ' });
     }
     const objectUrl = URL.createObjectURL(selectedThumnail);
     setPreview(objectUrl);
@@ -175,7 +203,7 @@ function ProductUpdate() {
                 placeholder="Nhập tên sản phẩm"
                 size="small"
                 error={!!errors.name}
-                helperText={errors.name ? 'Vui lòng nhập tên sản phẩm' : ''}
+                helperText={errors.name?.message}
                 {...register('name', { required: true })}
                 onBlurCapture={(e) => { e.target.value = e.target.value.trim(); }}
               />
@@ -249,7 +277,7 @@ function ProductUpdate() {
                 size="small"
                 type="number"
                 error={!!errors.cost}
-                helperText={errors.cost?.type === 'min' ? 'Giá sản phẩm phải lớn hơn 0' : errors.cost?.type === 'required' ? 'Vui lòng nhập giá sản phẩm' : ''}
+                helperText={errors.cost?.message}
                 {...register('cost', { required: true, min: 0 })}
                 onBlurCapture={(e) => { e.target.value = e.target.value.trim(); }}
               />
@@ -311,6 +339,7 @@ function ProductUpdate() {
                     accept="image/*"
                     style={{ display: 'none' }}
                     id="contained-button-file"
+                    {...register('thumnail')}
                     onChange={onSelectFile}
                   />
                   <label htmlFor="contained-button-file">
@@ -320,6 +349,7 @@ function ProductUpdate() {
                   </label>
                 </Box>
               </Box>
+              { errors.thumnail?.message && <span className={styles.errormessage}>{errors.thumnail?.message}</span>}
             </Grid>
             <Grid xs={12} className={styles.productslide}>
               <Box className={styles.productslidetitle}>
