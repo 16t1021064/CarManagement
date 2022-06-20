@@ -3,18 +3,6 @@ const { carService } = require('../services');
 const httpStatus = require('http-status');
 const multer = require('multer');
 
-//get all category
-const getAllCategory = catchAsync(async (req, res) => {
-    const categories = await carService.getAllCategory();
-    res.status(httpStatus.OK).send(categories);
-})
-
-//get all supplier
-const getAllSupplier = catchAsync(async (req, res) => {
-    const suppliers = await carService.getAllSupplier();
-    res.status(httpStatus.OK).send(suppliers);
-})
-
 const getRelate = catchAsync(async (req, res) => {
     const { cate } = req.params;
     const { categories , suppliers } = await carService.getAllRelate(cate);
@@ -99,7 +87,7 @@ const updateCar = catchAsync(async (req, res) => {
     }
     let place = 0;
     car.gallery=["","","",""];
-    for(let i = 0 ; i< 4; i++){
+    for(let i = 0 ; i< galleryCheck.length; i++){
         if (galleryString[i] === '' && galleryCheck[i] === 'exist') {
             car.gallery[i] = url + '/' + req.files?.gallery[place]?.filename;
             place++;
@@ -123,8 +111,6 @@ const deleteCar = catchAsync(async (req, res) => {
 module.exports = {
     getCar,
     createCar,
-    getAllCategory,
-    getAllSupplier,
     getCarById,
     uploadThumnail,
     testUpload,

@@ -122,7 +122,6 @@ export default function AddModal({ setResetCar }) {
     p: 4,
     borderRadius: '20px',
   };
-
   const previewThumb = () => {
     if (selectedThumnail) {
       return (
@@ -314,7 +313,7 @@ export default function AddModal({ setResetCar }) {
             >
               Thêm ảnh minh hoạ<span style={{ color: 'red' }}>*</span>
             </Typography>
-            <input type="file" id="inputfile" className={styles.inputfile} {...register('thumnail', { required: 'Vui lòng chọn ảnh đại diện', pattern: '/\.(jpg|jpeg|png|gif)$/)' })} accept="image/*" onChange={onSelectFile} />
+            <input type="file" id="inputfile" className={styles.inputfile} {...register('thumnail')} accept="image/*" onChange={onSelectFile} />
             {
               previewThumb()
             }

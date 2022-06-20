@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-console */
 /* eslint-disable consistent-return */
@@ -22,9 +23,8 @@ import { useHistory, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  getAllCategory,
-  getAllSupplier,
   getCarById,
+  getRelate,
   updateCar,
 } from '../../api';
 import AddModalSuccess from '../ManageProduct/components/AddModalSuccess';
@@ -34,6 +34,13 @@ import useLoading from '../../hooks/useLoading';
 import useModal from '../../hooks/useModal';
 
 const schema = yup.object().shape({
+  // thumnail: yup
+  //   .mixed()
+  //   .test('required', 'Vui lòng chọn ảnh đại diện', (value) => value && value.length)
+  //   .test('type', 'Vui lòng nhập file đúng định dạng JPEG, JPG, PNG', (value) => {
+  //     console.log(value);
+  //     (value[0]?.type === 'image/jpeg' || value[0]?.type === 'image/jpg' || value[0]?.type === 'image/png');
+  //   }),
   name: yup
     .string()
     .required('Vui lòng nhập tên')
@@ -55,8 +62,11 @@ const schema = yup.object().shape({
 function ProductUpdate() {
   const [category, setCategory] = useState('');
   const [supplier, setSupplier] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
+  const [list, setList] = useState({
+    categories: [],
+    suppliers: [],
+  });
+  const [currentCate, setCurrentCate] = useState('');
   const [carCurrent, setCarCurrent] = useState({});
   const [selectedThumnail, setSelectedThumnail] = useState();
   const [preview, setPreview] = useState();
@@ -75,24 +85,29 @@ function ProductUpdate() {
     handleSubmit,
     formState: { errors },
     reset,
-    setError,
   } = useForm({
     resolver: yupResolver(schema),
   });
   const handleChangeCategory = (event) => {
     setCategory(event.target.value);
+    setCurrentCate(event.target.value);
   };
   const handleChangeSupplier = (event) => {
     setSupplier(event.target.value);
   };
 
-  const getCategories = async () => {
-    const cate = await getAllCategory();
-    setCategories(cate);
-  };
-  const getSuppliers = async () => {
-    const sup = await getAllSupplier();
-    setSuppliers(sup);
+  const getList = async (categoryCur) => {
+    try {
+      let result;
+      if (categoryCur === 'Tất cả' || categoryCur === '') {
+        result = await getRelate('*');
+      } else {
+        result = await getRelate(categoryCur);
+      }
+      setList(result);
+    } catch (error) {
+      history.push('/server-error');
+    }
   };
   // eslint-disable-next-line new-cap
   const { id } = useParams();
@@ -121,18 +136,15 @@ function ProductUpdate() {
     }
   };
   useEffect(() => {
-    getSuppliers();
-    getCategories();
     getCarCurrent();
   }, []);
-
+  useEffect(() => {
+    getList(currentCate);
+  }, [currentCate]);
   useEffect(() => {
     if (!selectedThumnail) {
       setPreview(undefined);
       return;
-    }
-    if (!selectedThumnail.name.match(/\.(jpg|jpeg|png|gif)$/)) {
-      setError('thumnail', { type: 'custom', message: 'Vui lòng chọn file hợp lệ' });
     }
     const objectUrl = URL.createObjectURL(selectedThumnail);
     setPreview(objectUrl);
@@ -230,7 +242,7 @@ function ProductUpdate() {
                 {...register('category')}
                 onChange={handleChangeCategory}
               >
-                {categories.map((option) => (
+                {list.categories.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
@@ -256,7 +268,7 @@ function ProductUpdate() {
                 {...register('supplier')}
                 onChange={handleChangeSupplier}
               >
-                {suppliers.map((option) => (
+                {list.suppliers.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
@@ -336,10 +348,10 @@ function ProductUpdate() {
                 <Box className={styles.hoverthumb}>
                   <input
                     type="file"
-                    accept="image/*"
                     style={{ display: 'none' }}
                     id="contained-button-file"
                     {...register('thumnail')}
+                    accept="image/*"
                     onChange={onSelectFile}
                   />
                   <label htmlFor="contained-button-file">

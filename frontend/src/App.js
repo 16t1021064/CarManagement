@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
@@ -7,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import { createContext } from 'react';
 import ManageProduct from './pages/ManageProduct';
 import ProductListView from './pages/ProductListView';
+// eslint-disable-next-line import/order
 import ProductDetail from './pages/ProductDetail';
 import ProductUpdate from './pages/ProductUpdate';
 import ExamplePage from './pages/Example';
@@ -21,6 +23,7 @@ import Grid from '@mui/material/Grid';
 import NotFound from './pages/NotFound';
 import ErrorServer from './pages/ErrorServer';
 import 'react-toastify/dist/ReactToastify.css';
+import Login from './pages/Login';
 
 const routes = [
   {
@@ -52,14 +55,16 @@ const routes = [
     path: '/server-error',
     component: ErrorServer,
   },
+  {
+    path: '/login',
+    component: Login,
+  },
 ];
 
 export const AppContext = createContext();
 
 function App() {
   return (
-    // eslint-disable-next-line no-sequences
-    // eslint-disable-next-line object-shorthand
     <Container>
       <Grid container>
         <OverLayProvider>

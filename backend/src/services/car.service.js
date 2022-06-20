@@ -20,18 +20,7 @@ const createCar = async (carBody) => {
     return car;
 }
 
-const getAllCategory = async () => {
-    const categories = await Car.find({}).distinct('category');
-    return categories;
-}
-
-const getAllSupplier = async () => {
-    const suppliers = await Car.find({}).distinct('supplier');
-    return suppliers;
-}
-
 const getAllRelate = async (cate) => {
-    console.log(cate);
     if (cate !== '*') {
         const categories = await Car.find({}).distinct('category');
         const suppliers = await Car.find({}).where('category', cate).distinct('supplier');
@@ -94,8 +83,6 @@ const deleteCar = async (id) => {
 module.exports = {
     getAllCar,
     createCar,
-    getAllCategory,
-    getAllSupplier,
     paginate,
     getCarById,
     updateCar,
