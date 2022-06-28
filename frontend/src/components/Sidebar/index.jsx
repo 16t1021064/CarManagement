@@ -32,7 +32,7 @@ function SideBar() {
     useEffect(() => {
       getList(currentCate);
     }, [currentCate]);
-    if (location.pathname.includes('/not-found') || location.pathname.includes('/server-error')) {
+    if (location.pathname.includes('/not-found') || location.pathname.includes('/server-error') || location.pathname.includes('/login')) {
       return <></>;
     }
     return (

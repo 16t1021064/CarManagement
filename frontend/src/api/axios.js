@@ -33,11 +33,16 @@ axiosInstance.interceptors.response.use(
       throw error;
     }
     const statusCode = error.response.status;
+    const messageInfo = error.response.data.message;
     if (statusCode === 404) {
       window.location.href = '/not-found';
       return;
     }
     if (statusCode === 401) {
+      if (messageInfo === 'Incorrect email or password') {
+        window.location.href = '/login?e=1';
+        return;
+      }
       window.location.href = '/login';
       return;
     }
