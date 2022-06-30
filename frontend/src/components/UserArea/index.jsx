@@ -53,6 +53,7 @@ export default function UserArea({ currentUser }) {
   const history = useHistory();
   const onLogout = () => {
     localStorage.removeItem('current_user');
+    localStorage.removeItem('jwt_token');
     history.push('/login');
   };
 
